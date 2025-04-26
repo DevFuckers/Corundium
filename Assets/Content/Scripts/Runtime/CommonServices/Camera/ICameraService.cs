@@ -4,12 +4,12 @@ namespace DevFuckers.Assets.Content.Scripts.Runtime.CommonServices.Camera
 {
     public interface ICameraService
     {
-        void InitMotorCamera(GameObject cameraObject);
-        void InitFollowCamera(GameObject cameraObject);
+        void InitRootCamera(GameObject cameraObject);
+        void InitWalkCamera(GameObject cameraObject);
         void InitActionCamera(GameObject cameraObject);
         
-        GameObject GetMotorCamera();
-        GameObject GetFollowCamera();
+        GameObject GetRootCamera();
+        GameObject GetWalkCamera();
         GameObject GetActionCamera();
 
         void ShakeCamera(float intensity, float duration);
