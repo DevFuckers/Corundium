@@ -22,6 +22,11 @@ namespace DevFuckers.Assets.Content.Scripts.Runtime.Gameplay.Core.Player
         private StateMachine _motorFSM;
         private StateMachine _actionFSM;
 
+        private string _swingEvent = "SwingEvent";
+        private string _attackEvent = "AttackEvent";
+        private string _hitEvent = "HitEvent";
+        private string _swingEndEvent = "SwingEndEvent";
+
         public void Init()
         {
             _cameraService.InitRootCamera(_rootCamera);
@@ -47,6 +52,11 @@ namespace DevFuckers.Assets.Content.Scripts.Runtime.Gameplay.Core.Player
             _motorFSM.AddState("Walk", new WalkState(_configProvider, _inputService, _cameraService, _playerMotionController, _playerAnimationController, needsExitTime: false, isGhostState: false));
             _motorFSM.AddState("Jump", new JumpState(_configProvider, _inputService, _cameraService, _playerMotionController, _playerAnimationController, needsExitTime: false, isGhostState: false));
             _motorFSM.AddState("Run", new RunState(_configProvider, _inputService, _cameraService, _playerMotionController, _playerAnimationController, needsExitTime: false, isGhostState: false));
+            _motorFSM.AddState("Hit", new HitState(_configProvider, _cameraService, _playerMotionController, _playerAnimationController, needsExitTime: false, isGhostState: false));
+            _motorFSM.AddState("Grounding", new GroundingState(_configProvider, _inputService, _cameraService, _playerMotionController, needsExitTime: false, isGhostState: false));
+            _motorFSM.AddState("Dead", new DeadState(needsExitTime: false, isGhostState: false));
+            _motorFSM.AddState("InAir", new InAirState(_configProvider, _inputService, _cameraService, _playerMotionController, needsExitTime: false, isGhostState: false));
+            
 
             _motorFSM.AddTwoWayTransition("Idle", "Walk", t => IsMoving());
             _motorFSM.AddTwoWayTransition("Walk", "Run", t => IsRunning());
@@ -54,7 +64,14 @@ namespace DevFuckers.Assets.Content.Scripts.Runtime.Gameplay.Core.Player
             _motorFSM.AddTransition("Walk", "Jump", t => IsReadyToJump());
             _motorFSM.AddTransition("Idle", "Jump", t => IsReadyToJump());
 
-            _motorFSM.AddTransition("Jump", "Idle", t => _playerMotionController.IsPlayerGrounded());
+            // тут не понятно как сделать
+            _motorFSM.AddTransition(new TransitionAfter("Jump", "InAir", 0.2f)); // переключает в состояние InAir после 2 секунд (если прыжок дольше чем 1+ секунды)
+            // _motorFSM.AddTransition(new TransitionAfter("Jump", "Idle", 0.2f)); // переключает в состояние Idle после 1 секунды (если прыжок не дольше чем 1 секунда)
+
+            _motorFSM.AddTransition("InAir", "Grounding", t => _playerMotionController.IsPlayerGrounded());
+            _motorFSM.AddTransition(new TransitionAfter("Grounding", "Idle", 0.3f));
+
+            _motorFSM.AddTriggerTransitionFromAny(_hitEvent, new TransitionBase("", "Hit"));
 
             _motorFSM.SetStartState("Idle");
         }
@@ -63,28 +80,45 @@ namespace DevFuckers.Assets.Content.Scripts.Runtime.Gameplay.Core.Player
         {
             _actionFSM = new StateMachine();
 
-            _actionFSM.AddState("Attack", new AttackState(_playerAnimationController, _configProvider, needsExitTime: false, isGhostState: false));
-            _actionFSM.AddState("Calm", new CalmState(_playerAnimationController, _configProvider, needsExitTime: false, isGhostState: false));
+            var attackState = new AttackState(_playerAnimationController, _configProvider, needsExitTime: false, isGhostState: false);
+            var swingState = new SwingState(_playerAnimationController, _configProvider, needsExitTime: false, isGhostState: false);
 
-            // _actionFSM.AddTriggerTransition("AttackT", new Transition("Calm", "Attack"));
-            _actionFSM.AddTriggerTransition("AttackT", "Calm", "Attack");
-            _actionFSM.AddTriggerTransition("AttackT", new TransitionAfter( "Attack", "Calm", 0.5f));
-            // _actionFSM.AddTransition(new TransitionAfter( "Attack", "Calm", 0.5f)); // вохможно делай начинается только после выполнения условия или начала перехода
+            _actionFSM.AddState("Attack", attackState);
+            _actionFSM.AddState("Calm", new CalmState(_playerAnimationController, _configProvider, needsExitTime: false, isGhostState: false));
+            _actionFSM.AddState("Swing", swingState);
+
+            _actionFSM.AddTriggerTransition(_swingEvent, "Calm", "Swing");
+            _actionFSM.AddTriggerTransition(_swingEndEvent, "Swing", "Attack");
+            _actionFSM.AddTriggerTransition(_attackEvent, "Attack", "Calm");
 
             _actionFSM.SetStartState("Calm");
 
-            _inputService.AttackInputPressed += TriggerAttackState;
+            _inputService.AttackInputPressed += TriggerSwingState;
+            attackState.OnAttackEvent += TriggerAttackState; // где-то отписку вставить
+            swingState.OnSwingEndEvent += TriggerSwingEndState; // где-то отписку вставить
+        }
+
+        private void TriggerSwingState()
+        {
+            _actionFSM.Trigger(_swingEvent);
+            Debug.Log("Attack swing triggered!");
+        }
+
+        private void TriggerSwingEndState()
+        {
+            _actionFSM.Trigger(_swingEndEvent);
+            Debug.Log(" swing end triggered!");
         }
 
         private void TriggerAttackState()
         {
-            _actionFSM.Trigger("AttackT");
+            _actionFSM.Trigger(_attackEvent);
             Debug.Log("Attack triggered!");
         }
 
         private void OnDestroy()
         {
-            _inputService.AttackInputPressed -= TriggerAttackState;
+            _inputService.AttackInputPressed -= TriggerSwingState;
         }
 
         private bool IsMoving()

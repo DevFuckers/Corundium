@@ -32,7 +32,7 @@ namespace DevFuckers.Assets.Content.Scripts.Runtime.Gameplay.Core.Player.MotorSt
             _inputService.CameraRotateInputChanged += OnCameraRotateInputChanged;
 
             _motionController.Jump(_motionConfig.JumpForce);
-            _animationController.SetAnimationState("Jump", layerIndex: 0);
+            _animationController.SetAnimationState("Jump", layerIndex: 0, transitionTime: 0);
         }
 
 
