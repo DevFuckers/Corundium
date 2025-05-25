@@ -8,12 +8,12 @@ namespace DevFuckers.Assets.Content.Scripts.Runtime.CommonServices.Camera
         private GameObject _followCamera;
         private GameObject _actionCamera;
 
-        public void InitMotorCamera(GameObject cameraObject)
+        public void InitRootCamera(GameObject cameraObject)
         {
             _motorCamera = cameraObject;
         }
 
-        public void InitFollowCamera(GameObject cameraObject)
+        public void InitWalkCamera(GameObject cameraObject)
         {
             _followCamera = cameraObject;
         }
@@ -23,12 +23,12 @@ namespace DevFuckers.Assets.Content.Scripts.Runtime.CommonServices.Camera
             _actionCamera = cameraObject;
         }
 
-        public GameObject GetMotorCamera()
+        public GameObject GetRootCamera()
         {
             return _motorCamera;
         }
 
-        public GameObject GetFollowCamera()
+        public GameObject GetWalkCamera()
         {
             return _followCamera;
         }

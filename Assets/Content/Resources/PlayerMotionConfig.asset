@@ -12,4 +12,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6585277335124f14896d6523f1e1bf95, type: 3}
   m_Name: PlayerMotionConfig
   m_EditorClassIdentifier: 
-  <WalkSpeed>k__BackingField: 2
+  <WalkSpeed>k__BackingField: 9
+  <SmoothWalkDeltaTime>k__BackingField: 0.25
+  <StoppingDeltaTime>k__BackingField: 0.1
+  <RunSpeed>k__BackingField: 14
+  <SmoothRunDeltaTime>k__BackingField: 0.25
+  <CameraRotateSpeed>k__BackingField: 8
+  <JumpForce>k__BackingField: 9
+  <Gravity>k__BackingField: 20
+  <BobbingFadeSpeed>k__BackingField: 5
+  <BobbingSetDestinationSpeed>k__BackingField: 0.5
+  <WalkBobbingFrequencyX>k__BackingField: 0.5
+  <WalkBobbingFrequencyY>k__BackingField: 0.5
+  <WalkBobbingVerticalAmplitude>k__BackingField: 0.3
+  <WalkBobbingHorizontalAmplitude>k__BackingField: 0.2
+  <RunBobbingFrequencyX>k__BackingField: 0.5
+  <RunBobbingFrequencyY>k__BackingField: 0.5
+  <RunBobbingVerticalAmplitude>k__BackingField: 0.3
+  <RunBobbingHorizontalAmplitude>k__BackingField: 0.2
