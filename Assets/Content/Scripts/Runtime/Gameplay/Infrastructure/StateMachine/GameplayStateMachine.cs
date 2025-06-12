@@ -6,7 +6,7 @@ namespace DevFuckers.Assets.Content.Scripts.Runtime.Gameplay.Infrastructure.Stat
     public class GameplayStateMachine : InfrastructureStateMachine
     {
         public event Action StateMachineWasFinished;
-        
+
         public void Finish()
         {
             StateMachineWasFinished?.Invoke();

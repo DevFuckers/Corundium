@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Threading.Tasks;
 using DevFuckers.Assets.Content.Scripts.Runtime.CommonServices.SceneLoader;
 using DevFuckers.Assets.Content.Scripts.Runtime.CommonServices.UIRoot;
@@ -6,8 +5,8 @@ using DevFuckers.Assets.Content.Scripts.Runtime.Framework.StateMachine;
 using DevFuckers.Assets.Content.Scripts.Runtime.Gameplay.Infrastructure.EntryPoint;
 using DevFuckers.Assets.Content.Scripts.Runtime.Gameplay.Infrastructure.StateMachine;
 using DevFuckers.Assets.Content.Scripts.Runtime.Helpers;
+using DevFuckers.Assets.Content.Scripts.Runtime.Network;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using Zenject;
 
 namespace DevFuckers.Assets.Content.Scripts.Runtime.Game.Infrastructure.StateMachine.States
@@ -22,7 +21,11 @@ namespace DevFuckers.Assets.Content.Scripts.Runtime.Game.Infrastructure.StateMac
         public async void Enter()
         {
             await _sceneLoader.LoadAsync(Scenes.GAMEPLAY);
-            // Debug.Log(SceneManager.GetActiveScene().name);
+            var d = Object.FindFirstObjectByType<CustomNetworkManager>();
+            d.StartHost();
+
+            // d.ServerChangeScene(Scenes.GAMEPLAY);
+
 
             while (Object.FindFirstObjectByType<GameplayStateMachineInit>() == null)
             {
@@ -33,9 +36,6 @@ namespace DevFuckers.Assets.Content.Scripts.Runtime.Game.Infrastructure.StateMac
             }
 
             _uIRootView.HideLoadingCurtain();
-
-            // yield return new WaitUntil(() => 
-            //     Object.FindFirstObjectByType<GameplayStateMachineInit>() != null || Time.timeSinceLevelLoad > 20f);
 
             GameplayStateMachine gameplayStateMachine = Object.FindFirstObjectByType<GameplayStateMachineInit>().Init();
             gameplayStateMachine.StateMachineWasFinished += OnGameplayStateMachineFinished;

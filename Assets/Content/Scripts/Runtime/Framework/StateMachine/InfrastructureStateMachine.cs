@@ -26,9 +26,9 @@ namespace DevFuckers.Assets.Content.Scripts.Runtime.Framework.StateMachine
         public void RegisterState<TState>(TState state) where TState : IState
         {
             if (_statesMap.ContainsKey(typeof(TState)))
-                throw new ArgumentException("State already existing in States Map: " + typeof(TState));  
+                throw new ArgumentException("State already existing in States Map: " + typeof(TState));
 
-            _statesMap.Add(typeof(TState), state);      
+            _statesMap.Add(typeof(TState), state);
         }
     }
 }

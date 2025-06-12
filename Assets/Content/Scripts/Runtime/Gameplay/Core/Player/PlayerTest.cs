@@ -118,7 +118,8 @@ namespace DevFuckers.Assets.Content.Scripts.Runtime.Gameplay.Core.Player
 
         private void OnDestroy()
         {
-            _inputService.AttackInputPressed -= TriggerSwingState;
+            if (_inputService != null)
+                _inputService.AttackInputPressed -= TriggerSwingState;
         }
 
         private bool IsMoving()
