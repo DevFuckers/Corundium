@@ -110,6 +110,7 @@ Material:
     - _AddPrecomputedVelocity: 0
     - _AlphaClip: 1
     - _AlphaToMask: 1
+    - _Base_color: 0
     - _Blend: 0
     - _BlendModePreserveSpecular: 1
     - _BumpScale: 1
@@ -125,7 +126,8 @@ Material:
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
-    - _HeightBlend: 0.049
+    - _HeightBlend: 0.054
+    - _HeightWind: 0
     - _Metallic: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.005
@@ -139,16 +141,20 @@ Material:
     - _SrcBlendAlpha: 1
     - _Surface: 0
     - _TerrarianOffset: 0.11
-    - _TerrarianSize: 27.31
+    - _TerrarianSize: 27.22
+    - _Wild_Strenght: 0.22
+    - _Wind_Intensity: 1.05
+    - _Wind_Speed: 0.26
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 0.70980394, g: 0.7725491, b: 0.20784315, a: 1}
-    - _BottomColor: {r: 0.5939425, g: 0.735849, b: 0.26032394, a: 0}
+    - _Base_Color: {r: 0.1956793, g: 0.5, b: 0.15801886, a: 0}
+    - _BottomColor: {r: 0.5253196, g: 0.7372549, b: 0.25882354, a: 0}
     - _Color: {r: 0.70980394, g: 0.7725491, b: 0.20784312, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _FarColor: {r: 0.105438426, g: 0.3584906, b: 0.08962265, a: 0}
-    - _NearColor: {r: 0.50765795, g: 0.8962264, b: 0.20714669, a: 0}
+    - _FarColor: {r: 0.11532564, g: 0.3679245, b: 0.098923095, a: 0}
+    - _NearColor: {r: 0.43373492, g: 0.8113208, b: 0.14925243, a: 0}
     - _NearFarRange: {r: -7, g: 12.8, b: 0, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
