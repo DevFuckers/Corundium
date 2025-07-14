@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Plugins/TextMesh Pro/Fonts/LiberationSans - OFL.txt.meta
+guid: 5dd66f576e390b84d85ef799a1f309bc
+timeCreated: 1484171296
+licenseType: Pro
+TextScriptImporter:
+========
+guid: 0af0204ccb4ca1b44a5df05e54b7baa6
+folderAsset: yes
+DefaultImporter:
+  externalObjects: {}
+>>>>>>>> dev:Assets/Content/Art/_Shaders.meta
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
