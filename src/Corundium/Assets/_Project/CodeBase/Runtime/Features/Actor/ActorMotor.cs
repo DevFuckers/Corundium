@@ -49,8 +49,6 @@ public class ActorMotor : NetworkBehaviour
         _isMoveActive = true;
         _motorObject = transform;
 
-        OnEnable();
-
         if (!isLocalPlayer)
         {
             _camera.gameObject.SetActive(false);
@@ -62,24 +60,49 @@ public class ActorMotor : NetworkBehaviour
         }
     }
 
-    private void OnEnable()
+    public void EnableMovementControl()
+    {
+        if (_inputHandler == null)
+            return;
+
+        _isMoveActive = true;
+        _inputHandler.PlayerMoveInputChanged += SetMoveDirection;
+        _inputHandler.JumpInputPressed += SetJumpActive;
+    }
+
+    public void DisableMovementControl()
+    {
+        if (_inputHandler == null)
+            return;
+
+        _isMoveActive = false;
+        _inputHandler.PlayerMoveInputChanged -= SetMoveDirection;
+        _inputHandler.JumpInputPressed -= SetJumpActive;
+    }
+
+    public void EnableRotationControl()
     {
         if (_inputHandler == null)
             return;
 
         _inputHandler.RotateInputChanged += SetRotationDirection;
-        _inputHandler.PlayerMoveInputChanged += SetMoveDirection;
-        _inputHandler.JumpInputPressed += SetJumpActive;
     }
 
-    private void OnDisable()
+    public void DisableRotationControl()
     {
         if (_inputHandler == null)
             return;
-
+            
         _inputHandler.RotateInputChanged -= SetRotationDirection;
-        _inputHandler.PlayerMoveInputChanged -= SetMoveDirection;
-        _inputHandler.JumpInputPressed -= SetJumpActive;
+    }
+
+    void OnDestroy()
+    {
+        if (!isLocalPlayer)
+            return;
+            
+        DisableMovementControl();
+        DisableRotationControl();
     }
 
     private void Update()

@@ -54,7 +54,16 @@
                     "name": "Inventory",
                     "type": "Button",
                     "id": "fe6893a0-4e89-45de-b6eb-03e78a4c5bfb",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "ExitTransport",
+                    "type": "Button",
+                    "id": "fc9e6e13-53aa-4100-bc7f-b92f943ca8b3",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -168,6 +177,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Inventory",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d55f2958-684b-4993-87e2-5b370747e1f9",
+                    "path": "<Keyboard>/g",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ExitTransport",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
