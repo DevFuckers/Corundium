@@ -10,8 +10,8 @@ namespace DevFuckers
     {
         public static DiaryControll Instance;
 
+        [SerializeField] private GameObject _diaryObject;
         private PlayerInput _inputActions;
-        private GameObject _diaryObject;
         private DiaryTemplateCreator _diaryTemplateCreator;
         private DiaryTypeContent _currentPage;
 
@@ -20,10 +20,8 @@ namespace DevFuckers
 
         private void Awake()
         {
-            for (int i = 0; i < 1000; i++)
-            {
-                Debug.Log("тест");
-            }
+
+
             if (Instance == null)
             {
                 Instance = this;
@@ -35,11 +33,6 @@ namespace DevFuckers
             }
             _diaryTemplateCreator = GetComponent<DiaryTemplateCreator>();
             _inputActions = new PlayerInput();
-            _diaryObject = gameObject;
-            if (_diaryObject == null)
-            {
-                Debug.Log("соси хуй");
-            }
 
             _inputActions.Enable();
             _inputActions.Player.EnableDiary.performed += EnableDiary;
@@ -73,32 +66,30 @@ namespace DevFuckers
 
         public void EnablePage(DiaryTypeContent typeContent)
         {
-            bool isContainsKey = false;
-            isContainsKey = _pages.ContainsKey(typeContent);
-
-            if (isContainsKey == false)
+            if (typeContent != _currentPage)
             {
-                _pages.Add(typeContent, _diaryTemplateCreator.CreateTemplate(typeContent));
-                return;
-            }
 
-            switch (typeContent)
-            {
-                case DiaryTypeContent.Craft:
-                    _pages[typeContent].SetActive(true);
-                    break;
+                bool isContainsKey = false;
+                isContainsKey = _pages.ContainsKey(typeContent);
 
-                case DiaryTypeContent.Lighthouse:
-                    _pages[typeContent].SetActive(true);
-                    break;
-            }
-            if (_currentPage != DiaryTypeContent.empty)
-            {
-                _pages[typeContent].SetActive(false);
-                _currentPage = typeContent;
+                if (isContainsKey == false)
+                {
+                    _pages.Add(typeContent, _diaryTemplateCreator.CreateTemplate(typeContent));
+                }
+
+                _pages[typeContent].SetActive(true);
+
+                if (_currentPage != DiaryTypeContent.empty)
+                {
+                    _pages[_currentPage].SetActive(false);
+                    _currentPage = typeContent;
+                }
+
+                else { _currentPage = typeContent;}
+
             }
         }
 
-     
+
     }
 }
