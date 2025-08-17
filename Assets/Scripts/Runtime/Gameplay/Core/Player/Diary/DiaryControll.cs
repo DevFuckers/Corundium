@@ -11,6 +11,7 @@ namespace DevFuckers
         public static DiaryControll Instance;
 
         [SerializeField] private GameObject _diaryObject;
+        [SerializeField] private List<ContentButtonContext> _orderedContentButtons;
         private PlayerInput _inputActions;
         private DiaryTemplateCreator _diaryTemplateCreator;
         private DiaryTypeContent _currentPage;
@@ -20,8 +21,6 @@ namespace DevFuckers
 
         private void Awake()
         {
-
-
             if (Instance == null)
             {
                 Instance = this;
@@ -37,6 +36,8 @@ namespace DevFuckers
             _inputActions.Enable();
             _inputActions.Player.EnableDiary.performed += EnableDiary;
             _inputActions.UI.DisableDiary.performed += DisableDiary;
+            _inputActions.UI.SelectNextDiaryPageButton.performed += SelectNextPageButton;
+            _inputActions.UI.SelectPreviousDIaryPageButton.performed += SelectPreviousPageButton;
         }
 
         private void OnDestroy()
@@ -44,8 +45,11 @@ namespace DevFuckers
             _inputActions.Disable();
             _inputActions.Player.EnableDiary.performed -= EnableDiary;
             _inputActions.UI.DisableDiary.performed -= DisableDiary;
+            _inputActions.UI.SelectNextDiaryPageButton.performed -= SelectNextPageButton;
+            _inputActions.UI.SelectPreviousDIaryPageButton.performed -= SelectPreviousPageButton;
             _pages.Clear();
         }
+
         private void EnableDiary(UnityEngine.InputSystem.InputAction.CallbackContext context)
         {
             _diaryObject.SetActive(true);
@@ -85,11 +89,42 @@ namespace DevFuckers
                     _currentPage = typeContent;
                 }
 
-                else { _currentPage = typeContent;}
+                else { _currentPage = typeContent; }
 
             }
         }
 
+        private void SelectNextPageButton(UnityEngine.InputSystem.InputAction.CallbackContext context)
+        {
+            if (_orderedContentButtons[_orderedContentButtons.Count - 1].TypeContent == _currentPage)
+            {
+                return;
+            }
+
+            for (int i = 0; i < _orderedContentButtons.Count; i++)
+            {
+                if (_currentPage == _orderedContentButtons[i].TypeContent)
+                {
+                    EnablePage(_orderedContentButtons[i +1].TypeContent);
+                    return;
+                }
+            }
+        }
+
+        private void SelectPreviousPageButton(UnityEngine.InputSystem.InputAction.CallbackContext context)
+        {
+            if (_orderedContentButtons[0].TypeContent == _currentPage)
+            {
+                return;
+            }
+            for (int i = 0; i < _orderedContentButtons.Count; i++)
+            {
+                if (_currentPage == _orderedContentButtons[i].TypeContent)
+                {
+                    EnablePage(_orderedContentButtons[i - 1].TypeContent);
+                }
+            }
+        }
 
     }
 }

@@ -374,6 +374,24 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SelectNextDiaryPageButton"",
+                    ""type"": ""Button"",
+                    ""id"": ""1c354564-fbc5-4cbe-9200-aac0a7bf28b2"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SelectPreviousDIaryPageButton"",
+                    ""type"": ""Button"",
+                    ""id"": ""6a2c78b5-3c90-49c0-92db-7b57b48dc233"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -805,6 +823,28 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""action"": ""DisableDiary"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""63929c17-10d5-41a5-b5e0-34ed1c888118"",
+                    ""path"": ""<Keyboard>/downArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SelectNextDiaryPageButton"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d41b514f-215d-4e5b-81e9-1c9d23bbc485"",
+                    ""path"": ""<Keyboard>/upArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SelectPreviousDIaryPageButton"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -893,6 +933,8 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         m_UI_TrackedDevicePosition = m_UI.FindAction("TrackedDevicePosition", throwIfNotFound: true);
         m_UI_TrackedDeviceOrientation = m_UI.FindAction("TrackedDeviceOrientation", throwIfNotFound: true);
         m_UI_DisableDiary = m_UI.FindAction("DisableDiary", throwIfNotFound: true);
+        m_UI_SelectNextDiaryPageButton = m_UI.FindAction("SelectNextDiaryPageButton", throwIfNotFound: true);
+        m_UI_SelectPreviousDIaryPageButton = m_UI.FindAction("SelectPreviousDIaryPageButton", throwIfNotFound: true);
     }
 
     ~@PlayerInput()
@@ -1057,6 +1099,8 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     private readonly InputAction m_UI_TrackedDevicePosition;
     private readonly InputAction m_UI_TrackedDeviceOrientation;
     private readonly InputAction m_UI_DisableDiary;
+    private readonly InputAction m_UI_SelectNextDiaryPageButton;
+    private readonly InputAction m_UI_SelectPreviousDIaryPageButton;
     public struct UIActions
     {
         private @PlayerInput m_Wrapper;
@@ -1072,6 +1116,8 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         public InputAction @TrackedDevicePosition => m_Wrapper.m_UI_TrackedDevicePosition;
         public InputAction @TrackedDeviceOrientation => m_Wrapper.m_UI_TrackedDeviceOrientation;
         public InputAction @DisableDiary => m_Wrapper.m_UI_DisableDiary;
+        public InputAction @SelectNextDiaryPageButton => m_Wrapper.m_UI_SelectNextDiaryPageButton;
+        public InputAction @SelectPreviousDIaryPageButton => m_Wrapper.m_UI_SelectPreviousDIaryPageButton;
         public InputActionMap Get() { return m_Wrapper.m_UI; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1114,6 +1160,12 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @DisableDiary.started += instance.OnDisableDiary;
             @DisableDiary.performed += instance.OnDisableDiary;
             @DisableDiary.canceled += instance.OnDisableDiary;
+            @SelectNextDiaryPageButton.started += instance.OnSelectNextDiaryPageButton;
+            @SelectNextDiaryPageButton.performed += instance.OnSelectNextDiaryPageButton;
+            @SelectNextDiaryPageButton.canceled += instance.OnSelectNextDiaryPageButton;
+            @SelectPreviousDIaryPageButton.started += instance.OnSelectPreviousDIaryPageButton;
+            @SelectPreviousDIaryPageButton.performed += instance.OnSelectPreviousDIaryPageButton;
+            @SelectPreviousDIaryPageButton.canceled += instance.OnSelectPreviousDIaryPageButton;
         }
 
         private void UnregisterCallbacks(IUIActions instance)
@@ -1151,6 +1203,12 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @DisableDiary.started -= instance.OnDisableDiary;
             @DisableDiary.performed -= instance.OnDisableDiary;
             @DisableDiary.canceled -= instance.OnDisableDiary;
+            @SelectNextDiaryPageButton.started -= instance.OnSelectNextDiaryPageButton;
+            @SelectNextDiaryPageButton.performed -= instance.OnSelectNextDiaryPageButton;
+            @SelectNextDiaryPageButton.canceled -= instance.OnSelectNextDiaryPageButton;
+            @SelectPreviousDIaryPageButton.started -= instance.OnSelectPreviousDIaryPageButton;
+            @SelectPreviousDIaryPageButton.performed -= instance.OnSelectPreviousDIaryPageButton;
+            @SelectPreviousDIaryPageButton.canceled -= instance.OnSelectPreviousDIaryPageButton;
         }
 
         public void RemoveCallbacks(IUIActions instance)
@@ -1235,5 +1293,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         void OnTrackedDevicePosition(InputAction.CallbackContext context);
         void OnTrackedDeviceOrientation(InputAction.CallbackContext context);
         void OnDisableDiary(InputAction.CallbackContext context);
+        void OnSelectNextDiaryPageButton(InputAction.CallbackContext context);
+        void OnSelectPreviousDIaryPageButton(InputAction.CallbackContext context);
     }
 }

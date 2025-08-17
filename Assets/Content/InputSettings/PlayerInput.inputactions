@@ -352,6 +352,24 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "SelectNextDiaryPageButton",
+                    "type": "Button",
+                    "id": "1c354564-fbc5-4cbe-9200-aac0a7bf28b2",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "SelectPreviousDIaryPageButton",
+                    "type": "Button",
+                    "id": "6a2c78b5-3c90-49c0-92db-7b57b48dc233",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -781,6 +799,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "DisableDiary",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "63929c17-10d5-41a5-b5e0-34ed1c888118",
+                    "path": "<Keyboard>/downArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SelectNextDiaryPageButton",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d41b514f-215d-4e5b-81e9-1c9d23bbc485",
+                    "path": "<Keyboard>/upArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SelectPreviousDIaryPageButton",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
