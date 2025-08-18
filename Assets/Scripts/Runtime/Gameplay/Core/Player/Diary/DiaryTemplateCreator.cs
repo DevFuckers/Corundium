@@ -22,9 +22,9 @@ namespace DevFuckers
                     return page;
                     
 
-                case DiaryTypeContent.Lighthouse:
-                    page = Instantiate(_lightHousePageTemplate, _pagesParent.transform);
-                    return page;
+                // case DiaryTypeContent.Lighthouse:
+                //     page = Instantiate(_lightHousePageTemplate, _pagesParent.transform);
+                //     return page;
                 
             }
             page = new GameObject();

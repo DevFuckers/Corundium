@@ -29,7 +29,7 @@ namespace DevFuckers.Assets.Content.Scripts.Runtime.Gameplay.Core.Player.MotorSt
 
         public override void OnEnter()
         {
-            Debug.Log($"Entering {nameof(IdleState)} state.");
+            //Debug.Log($"Entering {nameof(IdleState)} state.");
 
             _inputService.CameraRotateInputChanged += OnCameraRotateInputChanged;
             _animationController.SetAnimationState("Idle", layerIndex: 0);
@@ -37,7 +37,7 @@ namespace DevFuckers.Assets.Content.Scripts.Runtime.Gameplay.Core.Player.MotorSt
 
         public override void OnExit()
         {
-            Debug.Log($"Exiting {nameof(IdleState)} state.");
+            //Debug.Log($"Exiting {nameof(IdleState)} state.");
 
             _inputService.CameraRotateInputChanged -= OnCameraRotateInputChanged;
         }

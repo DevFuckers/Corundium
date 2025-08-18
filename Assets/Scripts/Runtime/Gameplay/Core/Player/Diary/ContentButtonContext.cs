@@ -6,8 +6,8 @@ namespace DevFuckers
 {
     public class ContentButtonContext : MonoBehaviour
     {
-        public DiaryTypeContent TypeContent {  get => _typeContent;}
-        
+        public DiaryTypeContent TypeContent => _typeContent;
+
         [SerializeField] private DiaryTypeContent _typeContent;
 
         private Button _contentButton;

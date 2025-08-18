@@ -4,7 +4,6 @@ using UnityEngine;
 
 namespace DevFuckers
 {
-
     // логика будет переписана, когда будет доступ к статическому PlayerInput
     public class DiaryControll : MonoBehaviour
     {
@@ -30,6 +29,7 @@ namespace DevFuckers
             {
                 Destroy(gameObject);
             }
+            
             _diaryTemplateCreator = GetComponent<DiaryTemplateCreator>();
             _inputActions = new PlayerInput();
 

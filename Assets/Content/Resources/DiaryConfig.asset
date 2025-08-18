@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 070913de13f3433f94bf31fb2f2402e4, type: 3}
+  m_Name: DiaryConfig
+  m_EditorClassIdentifier: 
+  Pages:
+  - Id: Craft
+    Page: {fileID: 3035670168311634362, guid: dc718a5f73cc8d24cb8cb2b31d99c4ad, type: 3}
+  - Id: Lighthouse
+    Page: {fileID: 1257713088270424973, guid: 2a69cd4cbf611014dbf5f200b9ee0d49, type: 3}
