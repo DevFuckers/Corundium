@@ -19,4 +19,5 @@ public interface IInputHandler
     event Action InventoryPerformed;
 
     bool IsMovementInputLocked { get; set; }
+    event Action<bool> RunInputPressed;
 }
