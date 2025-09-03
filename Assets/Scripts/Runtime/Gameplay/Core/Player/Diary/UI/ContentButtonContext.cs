@@ -1,8 +1,8 @@
-using DevFuckers.Assets.Scripts.Runtime.Gameplay.Core.Player.Diary;
+﻿using DevFuckers.Assets.Scripts.Runtime.Gameplay.Core.Player.Diary.DiaryData;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace DevFuckers
+namespace DevFuckers.Assets.Scripts.Runtime.Gameplay.Core.Player.Diary.UI
 {
     public class ContentButtonContext : MonoBehaviour
     {
@@ -20,7 +20,7 @@ namespace DevFuckers
         {
             if (_typeContent != DiaryTypeContent.empty)
             {
-                _contentButton.onClick.AddListener(() => DiaryControll.Instance.EnablePage(_typeContent));
+                _contentButton.onClick.AddListener(() => DiaryBootstrapper.PageSwitcher.EnablePage(_typeContent));
             }
         }
     }

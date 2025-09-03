@@ -1,4 +1,4 @@
-﻿namespace DevFuckers.Assets.Scripts.Runtime.Gameplay.Core.Player.Diary
+﻿namespace DevFuckers.Assets.Scripts.Runtime.Gameplay.Core.Player.Diary.DiaryData
 {
     public enum DiaryTypeContent
     {

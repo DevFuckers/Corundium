@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using DevFuckers.Runtime.Gameplay.Core.Player.DiaryFeedback.Data;
 using DevFuckers.Runtime.Gameplay.Core.Player.DiaryFeedback.UI;
@@ -6,13 +6,13 @@ using UnityEngine;
 
 namespace DevFuckers.Runtime.Gameplay.Core.Player.DiaryFeedback
 {
-    public class DiaryInstaller : MonoBehaviour
+    public class DiaryFeedbackInstaller : MonoBehaviour
     {
         [SerializeField] private Transform _pagesRoot;
         [SerializeField] private GameObject _body;
         [SerializeField] private string _configPath = DiaryConfig.Name;
 
-        private DiaryInputHandler _inputHandler;
+        private DiaryFeedbackInputHandler _inputHandler;
         private List<PageSwitchButton> _pageSwitchButtons;
 
         private IEnumerable<string> PageSwitchButtonsIds => 
@@ -26,7 +26,7 @@ namespace DevFuckers.Runtime.Gameplay.Core.Player.DiaryFeedback
             var pageCreator = new PageCreator(configProvider, _pagesRoot);
             var pageSwitcher = new PageSwitcher(pageCreator, PageSwitchButtonsIds);
 
-            _inputHandler = new DiaryInputHandler(new PlayerInput(), pageSwitcher, _body);
+            _inputHandler = new DiaryFeedbackInputHandler(new PlayerInput(), pageSwitcher, _body);
 
             ConstructPageSwitchButtons(pageSwitcher);
         }

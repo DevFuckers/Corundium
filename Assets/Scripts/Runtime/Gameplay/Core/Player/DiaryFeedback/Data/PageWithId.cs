@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using UnityEngine;
 
 namespace DevFuckers.Runtime.Gameplay.Core.Player.DiaryFeedback.Data

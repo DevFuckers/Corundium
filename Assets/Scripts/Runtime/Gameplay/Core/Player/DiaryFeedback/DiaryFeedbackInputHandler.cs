@@ -1,10 +1,10 @@
-using System;
+﻿using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 namespace DevFuckers.Runtime.Gameplay.Core.Player.DiaryFeedback
 {
-    public class DiaryInputHandler
+    public class DiaryFeedbackInputHandler
     {
         private PageSwitcher _pageSwitcher;
         private PlayerInput _input;
@@ -15,7 +15,7 @@ namespace DevFuckers.Runtime.Gameplay.Core.Player.DiaryFeedback
         private Action<InputAction.CallbackContext> _switchToNextPage;
         private Action<InputAction.CallbackContext> _switchToPreviousPage;
 
-        public DiaryInputHandler(PlayerInput input, PageSwitcher pageSwitcher, GameObject diaryBody)
+        public DiaryFeedbackInputHandler(PlayerInput input, PageSwitcher pageSwitcher, GameObject diaryBody)
         {
             _diaryBody = diaryBody;
             _input = input;

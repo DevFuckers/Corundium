@@ -1,5 +1,4 @@
-using System;
-using DevFuckers.Assets.Scripts.Runtime.Gameplay.Core.Player.Diary;
+﻿using System;
 using UnityEngine;
 using Object = UnityEngine.Object;
 

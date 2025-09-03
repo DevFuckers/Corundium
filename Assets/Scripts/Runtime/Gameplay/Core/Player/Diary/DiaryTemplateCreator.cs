@@ -1,35 +1,30 @@
-﻿using DevFuckers.Assets.Scripts.Runtime.Gameplay.Core.Player.Diary;
-using NUnit.Framework;
-using System.Collections.Generic;
+﻿using DevFuckers.Assets.Scripts.Runtime.Gameplay.Core.Player.Diary.DiaryData;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
-namespace DevFuckers
+
+namespace DevFuckers.Assets.Scripts.Runtime.Gameplay.Core.Player.Diary
 {
-    public class DiaryTemplateCreator : MonoBehaviour
+    public class DiaryTemplateCreator
     {
-        [SerializeField] private GameObject _craftPageTemplate;
-        [SerializeField] private GameObject _lightHousePageTemplate;
+        private DiaryPageDataProvider _dataProvider;
+        private Transform _pagesParent;
 
-        [SerializeField] private GameObject _pagesParent;
+        public DiaryTemplateCreator(Transform pagesParent, DiaryPageDataProvider dataProvider)
+        {
+            _pagesParent = pagesParent;
+            _dataProvider = dataProvider;
+
+        }
 
         public GameObject CreateTemplate(DiaryTypeContent typeContent)
         {
             GameObject page;
-            switch (typeContent)
-            {
-                case DiaryTypeContent.Craft:
-                    page = Instantiate(_craftPageTemplate,_pagesParent.transform);
-                    return page;
-                    
 
-                // case DiaryTypeContent.Lighthouse:
-                //     page = Instantiate(_lightHousePageTemplate, _pagesParent.transform);
-                //     return page;
-                
-            }
-            page = new GameObject();
-            Debug.Log("Страницы не существует");
-            return page;
+            page = _dataProvider.GetTemplateByTypeContent(typeContent);
+
+            return GameObject.Instantiate(page, _pagesParent);
+
         }
     }
 }
