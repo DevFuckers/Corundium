@@ -3,8 +3,7 @@
     public enum DiaryTypeContent
     {
         empty,
-        Map,
-        Lighthouse,
-        Craft
+        Craft,
+        Lighthouse
     }
 }

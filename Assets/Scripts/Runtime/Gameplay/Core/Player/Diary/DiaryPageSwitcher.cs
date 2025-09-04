@@ -68,16 +68,21 @@ namespace DevFuckers.Assets.Scripts.Runtime.Gameplay.Core.Player.Diary
                 typeContent = (DiaryTypeContent)DiaryTypeContentIndex + 1;
                 EnablePage(typeContent);
             }
-        } 
+        }
 
         public void SelectPreviousPageButton(UnityEngine.InputSystem.InputAction.CallbackContext context)
         {
             Debug.Log("BlaBlaBla1");
             if (_currentPage == DiaryTypeContent.empty) { return; }
             int DiaryTypeContentIndex = (int)_currentPage;
-            int DiaryTypeContentLastPageIndex = Enum.GetValues(typeof(DiaryTypeContent)).Length;
-            bool IsPageExists = Enum.IsDefined(typeof(DiaryTypeContent), DiaryTypeContentIndex - 1);
+            int DiaryTypeContentLastPageIndex = Enum.GetValues(typeof(DiaryTypeContent)).Length -1;
+            bool IsPageExists = true;
             DiaryTypeContent typeContent;
+            typeContent = (DiaryTypeContent)DiaryTypeContentIndex -1;
+            if (typeContent == DiaryTypeContent.empty)
+            {
+                IsPageExists = false;
+            }
 
             if (IsPageExists == false)
             {

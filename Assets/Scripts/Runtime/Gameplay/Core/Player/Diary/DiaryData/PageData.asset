@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: PageData
   m_EditorClassIdentifier: 
   Pages:
-  - DiaryTypeContent: 3
+  - DiaryTypeContent: 1
     Page: {fileID: 3035670168311634362, guid: dc718a5f73cc8d24cb8cb2b31d99c4ad, type: 3}
   - DiaryTypeContent: 2
     Page: {fileID: 1257713088270424973, guid: 2a69cd4cbf611014dbf5f200b9ee0d49, type: 3}

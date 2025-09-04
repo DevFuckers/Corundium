@@ -19,6 +19,7 @@ namespace DevFuckers.Assets.Scripts.Runtime.Gameplay.Core.Player.Diary.UI
             _playerInput = playerInput;
             _diaryBody = diaryBody;
 
+
             _switchToNextPage += pageSwitcher.SelectNextPageButton;
             _switchToPreviousPage += pageSwitcher.SelectPreviousPageButton;
 

@@ -102,7 +102,9 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 5833549523724186863}
+  - {fileID: 1825548905700433104}
   m_Father: {fileID: 173421138711614382}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -140,8 +142,6 @@ RectTransform:
   m_Children:
   - {fileID: 368500700423041025}
   - {fileID: 4969374126888456353}
-  - {fileID: 5833549523724186863}
-  - {fileID: 1825548905700433104}
   - {fileID: 2218128443978725436}
   m_Father: {fileID: 177824108267488817}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -159,8 +159,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 177824108267488817}
-  - component: {fileID: 7519687435706454957}
-  - component: {fileID: 548112846436826678}
+  - component: {fileID: 8828872745424302374}
   m_Layer: 5
   m_Name: Diary
   m_TagString: Untagged
@@ -188,7 +187,7 @@ RectTransform:
   m_AnchoredPosition: {x: 73, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &7519687435706454957
+--- !u!114 &8828872745424302374
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -197,28 +196,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 7845888033825230234}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 82abf2c5e1f08e04ab6585a6170fe3e8, type: 3}
+  m_Script: {fileID: 11500000, guid: ed8d8f32dea21984cbf6abd2ae3df11e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _craftPageTemplate: {fileID: 3035670168311634362, guid: dc718a5f73cc8d24cb8cb2b31d99c4ad, type: 3}
-  _lightHousePageTemplate: {fileID: 1257713088270424973, guid: 2a69cd4cbf611014dbf5f200b9ee0d49, type: 3}
-  _pagesParent: {fileID: 8768427726089490385}
---- !u!114 &548112846436826678
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7845888033825230234}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 72dcaf3779961bf46a44fdfae982023d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _diaryObject: {fileID: 7352024149438712148}
-  _orderedContentButtons:
-  - {fileID: 7664368875140076497}
-  - {fileID: 2592955795131005934}
+  _diaryBody: {fileID: 7352024149438712148}
+  _pagesParent: {fileID: 4969374126888456353}
+  _pageData: {fileID: 11400000, guid: 4b82efeeeb280e742b4a7d645167bf68, type: 2}
 --- !u!1 &8768427726089490385
 GameObject:
   m_ObjectHideFlags: 0
@@ -260,7 +243,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 173421138711614382}
+    m_TransformParent: {fileID: 2218128443978725436}
     m_Modifications:
     - target: {fileID: 3201613170703908283, guid: 7e5ab44d1d40dfb42bab8db8b5c2d115, type: 3}
       propertyPath: m_Sprite
@@ -352,7 +335,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7477975208392326487, guid: 7e5ab44d1d40dfb42bab8db8b5c2d115, type: 3}
       propertyPath: _typeContent
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -364,24 +347,13 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 6732523367134698089, guid: 7e5ab44d1d40dfb42bab8db8b5c2d115, type: 3}
   m_PrefabInstance: {fileID: 980188462381411974}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &7664368875140076497 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7477975208392326487, guid: 7e5ab44d1d40dfb42bab8db8b5c2d115, type: 3}
-  m_PrefabInstance: {fileID: 980188462381411974}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4285485a5de97fb488b2c327b4ee20dc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &4916555691670636217
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 173421138711614382}
+    m_TransformParent: {fileID: 2218128443978725436}
     m_Modifications:
     - target: {fileID: 3201613170703908283, guid: 7e5ab44d1d40dfb42bab8db8b5c2d115, type: 3}
       propertyPath: m_Sprite
@@ -485,14 +457,3 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 6732523367134698089, guid: 7e5ab44d1d40dfb42bab8db8b5c2d115, type: 3}
   m_PrefabInstance: {fileID: 4916555691670636217}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &2592955795131005934 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7477975208392326487, guid: 7e5ab44d1d40dfb42bab8db8b5c2d115, type: 3}
-  m_PrefabInstance: {fileID: 4916555691670636217}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4285485a5de97fb488b2c327b4ee20dc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
