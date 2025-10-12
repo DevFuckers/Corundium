@@ -1,7 +1,7 @@
+using DevFuckers._Project.CodeBase.Runtime.Features.Stamina;
 using Mirror;
 using UnityEngine;
 using Zenject;
-
 
 public class ActorMotor : NetworkBehaviour
 {
@@ -20,29 +20,31 @@ public class ActorMotor : NetworkBehaviour
 
     private IInputHandler _inputHandler;
     private ICursorService _cursorService;
+    private IStaminaSpender _staminaSpender;
     private Transform _motorObject;
     private Vector3 _currentMoveDirection;
     private Vector3 _newMoveDirection;
     private Vector3 _currentVelocity;
     private float _yRotation;
     private float _jumpForce;
-    private bool _isJumpActive;
-    private bool _isMoveActive;
+    private bool _isRunActive;
 
+    [SerializeField] private bool _isJumpActive;
+    [SerializeField] private bool _isMoveActive;
+    
     [Inject]
-    public void Construct(IInputHandler inputHandler, ICursorService cursorService)
+    public void Construct(
+        IInputHandler inputHandler,
+        ICursorService cursorService,
+        IStaminaSpender staminaSpender)
     {
+        _staminaSpender = staminaSpender;
         _inputHandler = inputHandler;
         _cursorService = cursorService;
     }
 
-    private void Awake()
-    {
-        if (_cursorService == null)
-            return; 
-
-        _cursorService.SetCursorVisibility(false);
-    }
+    private void Awake() =>
+        _cursorService?.SetCursorVisibility(false);
 
     private void Start()
     {
@@ -64,19 +66,27 @@ public class ActorMotor : NetworkBehaviour
 
     private void OnEnable()
     {
+        if (!isLocalPlayer)
+            return;
+
         if (_inputHandler == null)
             return;
 
         _inputHandler.RotateInputChanged += SetRotationDirection;
         _inputHandler.PlayerMoveInputChanged += SetMoveDirection;
         _inputHandler.JumpInputPressed += SetJumpActive;
+        _inputHandler.RunInputPressed += SetRunActive;
     }
 
     private void OnDisable()
     {
+        if (!isLocalPlayer)
+            return;
+
         if (_inputHandler == null)
             return;
 
+        _inputHandler.RunInputPressed -= SetRunActive;
         _inputHandler.RotateInputChanged -= SetRotationDirection;
         _inputHandler.PlayerMoveInputChanged -= SetMoveDirection;
         _inputHandler.JumpInputPressed -= SetJumpActive;
@@ -87,34 +97,49 @@ public class ActorMotor : NetworkBehaviour
         if (!isLocalPlayer)
             return;
 
-        float velocity = _controller.velocity.magnitude;
-
-        _animator.SetFloat("Velocity", velocity);
-
         UpdateGravity();
 
-        if (!_isMoveActive)
-            return;
+        if (_isJumpActive) 
+            AddJumpForce(_jumpHeight);
 
-        if (_isJumpActive)
-            AddJumpForce();
+        if (_isMoveActive)
+        {
+            Move(_newMoveDirection);
+            Animate();
+        }
+    }
 
-        Vector3 moveVector = transform.TransformDirection(new Vector3(_newMoveDirection.x, 0, _newMoveDirection.y))
+    private void Move(Vector3 moveDirection)
+    {
+        float moveSpeedMultiplier = 1f;
+        
+        Vector3 moveVector = transform.TransformDirection(new Vector3(moveDirection.x, 0, moveDirection.y))
             .normalized;
+        
+        if (_isRunActive && moveVector.magnitude > 0.1f)
+        {
+            if (_staminaSpender.CanSpendFor("Run", Time.deltaTime))
+            {
+                moveSpeedMultiplier = 2f;
+                _staminaSpender.SpendFor("Run", Time.deltaTime);
+            }
+            else
+            {
+                moveSpeedMultiplier = 0f;
+            }
+        } 
 
         _currentMoveDirection.y = _jumpForce;
-        _currentMoveDirection = Vector3.SmoothDamp(_currentMoveDirection, moveVector * _moveSpeed, ref _currentVelocity,
+        
+        _currentMoveDirection = Vector3.SmoothDamp(_currentMoveDirection,
+            moveVector * (_moveSpeed * moveSpeedMultiplier), ref _currentVelocity,
             _smoothMoveDeltaTime);
 
         _controller.Move(_currentMoveDirection * Time.deltaTime);
     }
 
-
     private void SetRotationDirection(Vector2 rotation)
     {
-        if (!isLocalPlayer)
-            return;
-
         rotation = rotation * _rotateSpeed * Time.deltaTime;
 
         _yRotation -= rotation.y;
@@ -124,38 +149,17 @@ public class ActorMotor : NetworkBehaviour
         _motorObject.Rotate(Vector3.up * rotation.x);
     }
 
-    private void SetMoveDirection(Vector2 moveDirection)
+    private void AddJumpForce(float value)
     {
-        if (!isLocalPlayer)
-            return;
-
-        _newMoveDirection = moveDirection;
-    }
-
-    private void SetJumpActive(bool isJumpActive)
-    {
-        if (!isLocalPlayer)
-            return;
-
-        _isJumpActive = isJumpActive;
-    }
-
-    private void AddJumpForce()
-    {
-        if (!isLocalPlayer)
-            return;
-
-        if (_controller.isGrounded)
+        if (_controller.isGrounded && _staminaSpender.CanSpendFor("Jump"))
         {
-            _jumpForce = _jumpHeight;
+            _jumpForce = value;
+            _staminaSpender.SpendFor("Jump");
         }
     }
 
     private void UpdateGravity()
     {
-        if (!isLocalPlayer)
-            return;
-
         if (_jumpForce > _gravity)
         {
             _animator.SetBool("IsnotGrounded", true);
@@ -166,4 +170,16 @@ public class ActorMotor : NetworkBehaviour
             _animator.SetBool("IsnotGrounded", false);
         }
     }
+
+    private void Animate() => 
+        _animator.SetFloat("Velocity", _controller.velocity.magnitude);
+
+    private void SetMoveDirection(Vector2 moveDirection) => 
+        _newMoveDirection = moveDirection;
+
+    private void SetJumpActive(bool isJumpActive) => 
+        _isJumpActive = isJumpActive;
+
+    private void SetRunActive(bool isActive) =>
+        _isRunActive = isActive;
 }

@@ -18,7 +18,7 @@
                     "name": "Jump",
                     "type": "Button",
                     "id": "90ee17b6-1fc5-4834-ba61-565494dc8a8f",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -27,7 +27,7 @@
                     "name": "Attack",
                     "type": "Button",
                     "id": "622742eb-31f7-468e-8834-08442522dc7b",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -36,7 +36,7 @@
                     "name": "OpenRadialMenu",
                     "type": "Button",
                     "id": "89d28eaa-7ac2-4369-a37c-bea8d88d0703",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -45,7 +45,7 @@
                     "name": "GetTool",
                     "type": "Button",
                     "id": "3339cb78-920b-4555-87c7-29e88c4d3872",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -54,7 +54,16 @@
                     "name": "Inventory",
                     "type": "Button",
                     "id": "fe6893a0-4e89-45de-b6eb-03e78a4c5bfb",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Run",
+                    "type": "Button",
+                    "id": "427d01ff-df1b-4839-94fc-add9d8c0b936",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -168,6 +177,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Inventory",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "bea27552-3bfa-4398-a141-fa4da2ef3352",
+                    "path": "<Keyboard>/shift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Run",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

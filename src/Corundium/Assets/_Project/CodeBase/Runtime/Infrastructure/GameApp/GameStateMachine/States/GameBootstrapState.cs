@@ -18,6 +18,9 @@ public class GameBootstrapState : IState
     public void Enter()
     {
         Debug.Log("Boostrap State");
+        
+        Application.targetFrameRate = 60;
+        
         // init services 
         _inputHandler.Enable();
         _loadingCurtain.Show();

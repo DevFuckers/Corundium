@@ -5,6 +5,7 @@ using Zenject;
 public class InputHandler : IInputHandler
 {
     // Gameplay - Player
+    public event Action<bool> RunInputPressed = delegate { };
     public event Action<Vector2> PlayerMoveInputChanged = delegate { };
     public event Action<bool> JumpInputPressed = delegate { };
     public event Action AttackPerformed = delegate { };
@@ -29,6 +30,9 @@ public class InputHandler : IInputHandler
 
     public void Enable()
     {
+        Input.Gameplay.Run.performed += _ => RunInputPressed?.Invoke(true);
+        Input.Gameplay.Run.canceled += _ => RunInputPressed?.Invoke(false);
+            
         Input.Gameplay.Move.performed += ctx => OnPlayerMoveInputChanged(ctx.ReadValue<Vector2>());
         Input.Gameplay.Move.canceled += ctx => OnPlayerMoveInputChanged(Vector2.zero);
 
