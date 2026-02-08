@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc8a8db3dec77a7438b3aeb4fa4013bb, type: 3}
   m_Name: GameRunnerConfig
   m_EditorClassIdentifier: 
-  _enabled: 1
+  _enabled: 0
