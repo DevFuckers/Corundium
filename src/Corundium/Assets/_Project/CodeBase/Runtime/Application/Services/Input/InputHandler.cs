@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using Zenject;
 
-public class InputHandler : IInputHandler
+public class InputHandler : IInputHandler, IDisposable
 {
     // Gameplay - Player
     public event Action<bool> RunInputPressed = delegate { };
@@ -58,30 +58,14 @@ public class InputHandler : IInputHandler
         Input.Transport.Disable();
     }
 
-    public void Disable()
+    public void Dispose()
     {
-        Input.Disable();
-
-        Input.Gameplay.Move.performed -= ctx => OnPlayerMoveInputChanged(ctx.ReadValue<Vector2>());
-        Input.Gameplay.Move.canceled -= ctx => OnPlayerMoveInputChanged(Vector2.zero);
-
-        Input.Gameplay.Jump.performed -= ctx => JumpInputPressed?.Invoke(true);
-        Input.Gameplay.Jump.canceled -= ctx => JumpInputPressed?.Invoke(false);
-
-        Input.Gameplay.Attack.performed -= ctx => AttackPerformed?.Invoke();
-
-        Input.Gameplay.GetTool.performed -= ctx => GetToolPerformed?.Invoke();
-
-
-        Input.Gameplay.OpenRadialMenu.performed -= ctx => RadialMenuPerformed?.Invoke();
-        Input.Gameplay.OpenRadialMenu.canceled -= ctx => RadialMenuClosed?.Invoke();
-
-        Input.Emergency.Rotate.performed -= ctx => OnRotateInputChanged(ctx.ReadValue<Vector2>());
-        Input.Emergency.Interact.performed -= ctx => InteractPerformed?.Invoke();
-        Input.Emergency.Esc.performed -= ctx => EscPerformed?.Invoke();
-
-        Input.Transport.Move.performed -= ctx => OnTransportMoveInputChanged(ctx.ReadValue<Vector2>());
-        Input.Transport.Move.canceled -= ctx => OnTransportMoveInputChanged(Vector2.zero);
+        if (_input != null)
+        {
+            _input.Disable();
+            _input.Dispose();
+            _input = null;
+        }
     }
 
     private void OnRotateInputChanged(Vector2 direction)

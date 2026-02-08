@@ -10,6 +10,7 @@ public class DamageableTest : NetworkBehaviour
 		_triggerObserver.TriggerEnter += OnTriggerEnter;
     }
 
+    [Command]
     public void DealDamage(GameObject target, int damage)
 	{
 		if (!isServer) return;
