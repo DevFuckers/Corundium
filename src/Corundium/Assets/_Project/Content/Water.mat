@@ -63,11 +63,11 @@ Material:
     - _PhaseNoiseStrength: 6.6
     - _ReflectionStrength: 0.067
     - _RefractionStrength: 0.045
-    - _SSSStrength: 0.6
+    - _SSSStrength: 0
     - _Smoothness: 0.92
     - _WaveSpeed: 0.63
     m_Colors:
-    - _DeepColor: {r: 0.051085785, g: 0.18180338, b: 0.38679245, a: 0.972549}
+    - _DeepColor: {r: 0.051085755, g: 0.18180335, b: 0.38679242, a: 0.95686275}
     - _FoamColor: {r: 1, g: 1, b: 1, a: 1}
     - _NormalSpeed: {r: 0.05, g: 0.03, b: -0.04, a: 0.02}
     - _SSSColor: {r: 0, g: 0.8, b: 0.5, a: 1}
