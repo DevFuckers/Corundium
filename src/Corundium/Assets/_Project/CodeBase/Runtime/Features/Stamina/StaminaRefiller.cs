@@ -1,6 +1,9 @@
+using UnityEngine;
+using Zenject;
+
 namespace DevFuckers._Project.CodeBase.Runtime.Features.Stamina
 {
-    public class StaminaRefiller : IUpdateable
+    public class StaminaRefiller : ITickable
     {
         private float _staminaPerSecond;
         private Stamina _stamina;
@@ -14,6 +17,8 @@ namespace DevFuckers._Project.CodeBase.Runtime.Features.Stamina
             _staminaPerSecond = staminaPerSecond;
         }
 
+        public void Tick() => Update(Time.deltaTime);
+        
         public void Update(float deltaTime)
         {
             _isValueDecreasing = _stamina.Value < _lastStaminaValue;

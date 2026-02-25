@@ -1,9 +1,9 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class WorldHealthBarUI : MonoBehaviour
+public class WorldBarUI : MonoBehaviour
 {
-    [SerializeField] private Slider _healthSlider;
+    [SerializeField] private Slider _Slider;
     private Camera _mainCam;
 
     void Start()
@@ -14,8 +14,8 @@ public class WorldHealthBarUI : MonoBehaviour
 
     public void UpdateUI(float currentValue, float maxValue)
     {
-        if (_healthSlider != null && maxValue > 0)
-            _healthSlider.value = currentValue / maxValue;
+        if (_Slider != null && maxValue > 0)
+            _Slider.value = currentValue / maxValue;
     }
 
 

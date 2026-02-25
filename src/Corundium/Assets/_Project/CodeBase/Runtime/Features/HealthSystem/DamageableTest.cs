@@ -1,3 +1,4 @@
+using DevFuckers._Project.CodeBase.Runtime.Features.HealthSystem;
 using Mirror;
 using UnityEngine;
 
@@ -7,23 +8,20 @@ public class DamageableTest : NetworkBehaviour
 
     private void Start()
     {
-		_triggerObserver.TriggerEnter += OnTriggerEnter;
+		_triggerObserver.TriggerEnter += OnTriggerEnterHandler;
     }
-
-    [Command]
+	
     public void DealDamage(GameObject target, int damage)
 	{
-		if (!isServer) return;
+		if (!isServer) 
+			return;
 
-		Debug.Log(target + " 2");
-
-		if (target.TryGetComponent(out Health health))
+		if (target.TryGetComponent(out PlayerHealth health))
 			health.TakeDamage(damage);
 	}
 
-	void OnTriggerEnter(Collider other)
+	void OnTriggerEnterHandler(Collider other)
 	{
-		Debug.Log(other + " 1");
 		DealDamage(other.gameObject, 10);
 	}
 }

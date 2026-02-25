@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: StaminaSpendingConfig
   m_EditorClassIdentifier: 
   Spendings:
-  - Id: Run
+  - Type: 0
     Value: 20
-  - Id: Jump
+  - Type: 1
     Value: 30

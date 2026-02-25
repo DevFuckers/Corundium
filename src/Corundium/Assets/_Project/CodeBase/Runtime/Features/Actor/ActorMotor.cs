@@ -118,10 +118,10 @@ public class ActorMotor : NetworkBehaviour
         
         if (_isRunActive && moveVector.magnitude > 0.1f)
         {
-            if (_staminaSpender.CanSpendFor("Run", Time.deltaTime))
+            if (_staminaSpender.CanSpendFor(ESpendindStaminaType.Run, Time.deltaTime))
             {
                 moveSpeedMultiplier = 2f;
-                _staminaSpender.SpendFor("Run", Time.deltaTime);
+                _staminaSpender.SpendFor(ESpendindStaminaType.Run, Time.deltaTime);
             }
             else
             {
@@ -151,10 +151,10 @@ public class ActorMotor : NetworkBehaviour
 
     private void AddJumpForce(float value)
     {
-        if (_controller.isGrounded && _staminaSpender.CanSpendFor("Jump"))
+        if (_controller.isGrounded && _staminaSpender.CanSpendFor(ESpendindStaminaType.Jump))
         {
             _jumpForce = value;
-            _staminaSpender.SpendFor("Jump");
+            _staminaSpender.SpendFor(ESpendindStaminaType.Jump);
         }
     }
 

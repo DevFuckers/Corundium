@@ -1,57 +1,30 @@
 using DevFuckers._Project.CodeBase.Runtime.Features.Stamina.Data;
-using UnityEngine;
-using UnityEngine.UI;
 using Zenject;
 
 namespace DevFuckers._Project.CodeBase.Runtime.Features.Stamina.Installer
 {
-    public class StaminaInstaller : MonoInstaller, IStamina
+    public class StaminaInstaller : MonoInstaller
     {
-        public float Value = 100;
-        public float RefillPerSecond = 20;
-        public Slider View;
-        public string StaminaSpendingConfigPath = StaminaSpendingConfig.Name;
-
-        private Stamina _model;
-        private StaminaRefiller _refiller;
-
-        private IStaminaSpender _spender;
-
-        float IStamina.Value
-        {
-            get => _model.Value;
-            set => _model.Value = value;
-        }
+        public float InitialValue = 100;
+        public float RefillSpeed = 20;
+        public string ConfigPath = StaminaSpendingConfig.Name;
 
         public override void InstallBindings()
         {
-            var configProvider = new StaminaSpendingConfigProvider(StaminaSpendingConfigPath);
-            var model = new Stamina(Value, Value);
-            var spender = new StaminaSpender(model, configProvider);
-            var refiller = new StaminaRefiller(model, RefillPerSecond);
+            var model = new Stamina(InitialValue, InitialValue);
+            Container.Bind<Stamina>().FromInstance(model).AsSingle();
+            
+            Container.Bind<StaminaSpendingConfigProvider>()
+                .AsSingle()
+                .WithArguments(ConfigPath);
 
-            _model = model;
-            _refiller = refiller;
+            // 3. Логика расхода
+            Container.Bind<IStaminaSpender>().To<StaminaSpender>().AsSingle();
 
-            Container.Bind<IStaminaSpender>().FromInstance(spender).AsSingle();
-        }
-
-        private void Start()
-        {
-            UpdateView();
-            _model.Changed += UpdateView;
-        }
-
-        private void Update() =>
-            _refiller.Update(Time.deltaTime);
-
-        private void OnDestroy() =>
-            _model.Changed -= UpdateView;
-
-        private void UpdateView()
-        {
-            if (View != null)
-                View.value = _model.Value / _model.MaxValue;
+            // 4. Логика восстановления (автоматически вызывается через ITickable)
+            Container.BindInterfacesTo<StaminaRefiller>()
+                .AsSingle()
+                .WithArguments(RefillSpeed);
         }
     }
 }
