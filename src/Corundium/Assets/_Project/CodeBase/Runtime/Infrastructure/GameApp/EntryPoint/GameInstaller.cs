@@ -6,7 +6,6 @@ public class GameInstaller : MonoInstaller
 {
     public override void InstallBindings()
     {
-        BindPauseService();
         BindCursorService();
         BindInputService();
         BindSceneLoader();
@@ -29,9 +28,6 @@ public class GameInstaller : MonoInstaller
         Container.Bind<StateFactory>().AsSingle();
         Container.Bind<GameStateMachine>().AsSingle();
     }
-
-    private void BindPauseService() =>
-        Container.BindInterfacesAndSelfTo<PauseService>().AsSingle();
 
     private void BindCursorService() =>
         Container.BindInterfacesAndSelfTo<CursorService>().AsSingle();

@@ -2,6 +2,8 @@ using System;
 
 public interface IPauseService
 {
-    Action PauseActivated { get; set; }
-    Action PauseDeActivated { get; set; }
+	void Add(IPausable pausable);
+	void Remove(IPausable pausable);
+	void PerformResume();
+	void PerformStop();
 }

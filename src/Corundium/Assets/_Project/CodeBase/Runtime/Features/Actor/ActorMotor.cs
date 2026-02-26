@@ -3,183 +3,202 @@ using Mirror;
 using UnityEngine;
 using Zenject;
 
-public class ActorMotor : NetworkBehaviour
+public class ActorMotor : NetworkBehaviour, IPausable
 {
-    [Header("References")]
-    [SerializeField] private CharacterController _controller;
-    [SerializeField] private Camera _camera;
-    [SerializeField] private Renderer _model;
-    [SerializeField] private Animator _animator;
+	[Header("References")] [SerializeField]
+	private CharacterController _controller;
 
-    [Header("Settings")]
-    [SerializeField] private float _gravity;
-    [SerializeField] private float _jumpHeight;
-    [SerializeField] private float _moveSpeed;
-    [SerializeField] private float _rotateSpeed;
-    [SerializeField] private float _smoothMoveDeltaTime;
+	[SerializeField] private Camera _camera;
+	[SerializeField] private Renderer _model;
+	[SerializeField] private Animator _animator;
 
-    private IInputHandler _inputHandler;
-    private ICursorService _cursorService;
-    private IStaminaSpender _staminaSpender;
-    private Transform _motorObject;
-    private Vector3 _currentMoveDirection;
-    private Vector3 _newMoveDirection;
-    private Vector3 _currentVelocity;
-    private float _yRotation;
-    private float _jumpForce;
-    private bool _isRunActive;
+	[Header("Settings")] [SerializeField] private float _gravity;
+	[SerializeField] private float _jumpHeight;
+	[SerializeField] private float _moveSpeed;
+	[SerializeField] private float _rotateSpeed;
+	[SerializeField] private float _smoothMoveDeltaTime;
 
-    [SerializeField] private bool _isJumpActive;
-    [SerializeField] private bool _isMoveActive;
-    
-    [Inject]
-    public void Construct(
-        IInputHandler inputHandler,
-        ICursorService cursorService,
-        IStaminaSpender staminaSpender)
-    {
-        _staminaSpender = staminaSpender;
-        _inputHandler = inputHandler;
-        _cursorService = cursorService;
-    }
+	private IInputHandler _inputHandler;
+	private IStaminaSpender _staminaSpender;
+	private IPauseService _pauseService;
+	private Transform _motorObject;
+	private Vector3 _currentMoveDirection;
+	private Vector3 _newMoveDirection;
+	private Vector3 _currentVelocity;
+	private float _yRotation;
+	private float _jumpForce;
 
-    private void Awake() =>
-        _cursorService?.SetCursorVisibility(false);
+	[SerializeField] private bool _isJumpActive = false;
+	[SerializeField] private bool _isMoveActive = false;
+	private bool _isRunActive = false;
+	private bool _isPaused = false;
 
-    private void Start()
-    {
-        _isMoveActive = true;
-        _motorObject = transform;
+	[Inject]
+	public void Construct(
+		IInputHandler inputHandler,
+		ICursorService cursorService,
+		IStaminaSpender staminaSpender,
+		IPauseService pauseService)
+	{
+		_staminaSpender = staminaSpender;
+		_inputHandler = inputHandler;
+		_pauseService = pauseService;
+	}
 
-        OnEnable();
+	private void Start()
+	{
+		_isMoveActive = true;
+		_motorObject = transform;
 
-        if (!isLocalPlayer)
-        {
-            _camera.gameObject.SetActive(false);
-        }
+		OnEnable();
 
-        if (isLocalPlayer)
-        {
-            _model.enabled = false;
-        }
-    }
+		if (!isLocalPlayer)
+		{
+			_camera.gameObject.SetActive(false);
+		}
 
-    private void OnEnable()
-    {
-        if (!isLocalPlayer)
-            return;
+		if (isLocalPlayer)
+		{
+			_model.enabled = false;
+		}
+	}
 
-        if (_inputHandler == null)
-            return;
+	private void OnEnable()
+	{
+		if (!isLocalPlayer)
+			return;
 
-        _inputHandler.RotateInputChanged += SetRotationDirection;
-        _inputHandler.PlayerMoveInputChanged += SetMoveDirection;
-        _inputHandler.JumpInputPressed += SetJumpActive;
-        _inputHandler.RunInputPressed += SetRunActive;
-    }
+		if (_inputHandler == null)
+			return;
 
-    private void OnDisable()
-    {
-        if (!isLocalPlayer)
-            return;
+		_inputHandler.RotateInputChanged += SetRotationDirection;
+		_inputHandler.PlayerMoveInputChanged += SetMoveDirection;
+		_inputHandler.JumpInputPressed += SetJumpActive;
+		_inputHandler.RunInputPressed += SetRunActive;
 
-        if (_inputHandler == null)
-            return;
+		_pauseService.Add(this);
+	}
 
-        _inputHandler.RunInputPressed -= SetRunActive;
-        _inputHandler.RotateInputChanged -= SetRotationDirection;
-        _inputHandler.PlayerMoveInputChanged -= SetMoveDirection;
-        _inputHandler.JumpInputPressed -= SetJumpActive;
-    }
+	private void OnDisable()
+	{
+		if (!isLocalPlayer)
+			return;
 
-    private void Update()
-    {
-        if (!isLocalPlayer)
-            return;
+		if (_inputHandler == null)
+			return;
 
-        UpdateGravity();
+		_inputHandler.RunInputPressed -= SetRunActive;
+		_inputHandler.RotateInputChanged -= SetRotationDirection;
+		_inputHandler.PlayerMoveInputChanged -= SetMoveDirection;
+		_inputHandler.JumpInputPressed -= SetJumpActive;
 
-        if (_isJumpActive) 
-            AddJumpForce(_jumpHeight);
+		_pauseService.Remove(this);
+	}
 
-        if (_isMoveActive)
-        {
-            Move(_newMoveDirection);
-            Animate();
-        }
-    }
+	private void Update()
+	{
+		if (!isLocalPlayer)
+			return;
 
-    private void Move(Vector3 moveDirection)
-    {
-        float moveSpeedMultiplier = 1f;
-        
-        Vector3 moveVector = transform.TransformDirection(new Vector3(moveDirection.x, 0, moveDirection.y))
-            .normalized;
-        
-        if (_isRunActive && moveVector.magnitude > 0.1f)
-        {
-            if (_staminaSpender.CanSpendFor(ESpendindStaminaType.Run, Time.deltaTime))
-            {
-                moveSpeedMultiplier = 2f;
-                _staminaSpender.SpendFor(ESpendindStaminaType.Run, Time.deltaTime);
-            }
-            else
-            {
-                moveSpeedMultiplier = 0f;
-            }
-        } 
+		UpdateGravity();
 
-        _currentMoveDirection.y = _jumpForce;
-        
-        _currentMoveDirection = Vector3.SmoothDamp(_currentMoveDirection,
-            moveVector * (_moveSpeed * moveSpeedMultiplier), ref _currentVelocity,
-            _smoothMoveDeltaTime);
+		if (_isPaused)
+			return;
 
-        _controller.Move(_currentMoveDirection * Time.deltaTime);
-    }
+		if (_isJumpActive)
+			AddJumpForce(_jumpHeight);
 
-    private void SetRotationDirection(Vector2 rotation)
-    {
-        rotation = rotation * _rotateSpeed * Time.deltaTime;
+		if (_isMoveActive)
+		{
+			Move(_newMoveDirection);
+			Animate();
+		}
+	}
 
-        _yRotation -= rotation.y;
-        _yRotation = Mathf.Clamp(_yRotation, -90f, 90f);
+	private void Move(Vector3 moveDirection)
+	{
+		float moveSpeedMultiplier = 1f;
 
-        _camera.transform.localRotation = Quaternion.Euler(_yRotation, 0f, 0f);
-        _motorObject.Rotate(Vector3.up * rotation.x);
-    }
+		Vector3 moveVector = transform.TransformDirection(new Vector3(moveDirection.x, 0, moveDirection.y))
+			.normalized;
 
-    private void AddJumpForce(float value)
-    {
-        if (_controller.isGrounded && _staminaSpender.CanSpendFor(ESpendindStaminaType.Jump))
-        {
-            _jumpForce = value;
-            _staminaSpender.SpendFor(ESpendindStaminaType.Jump);
-        }
-    }
+		if (_isRunActive && moveVector.magnitude > 0.1f)
+		{
+			if (_staminaSpender.CanSpendFor(ESpendindStaminaType.Run, Time.deltaTime))
+			{
+				moveSpeedMultiplier = 2f;
+				_staminaSpender.SpendFor(ESpendindStaminaType.Run, Time.deltaTime);
+			}
+			else
+			{
+				moveSpeedMultiplier = 0f;
+			}
+		}
 
-    private void UpdateGravity()
-    {
-        if (_jumpForce > _gravity)
-        {
-            _animator.SetBool("IsnotGrounded", true);
-            _jumpForce += _gravity * Time.deltaTime;
-        }
-        else
-        {
-            _animator.SetBool("IsnotGrounded", false);
-        }
-    }
+		_currentMoveDirection.y = _jumpForce;
 
-    private void Animate() => 
-        _animator.SetFloat("Velocity", _controller.velocity.magnitude);
+		_currentMoveDirection = Vector3.SmoothDamp(_currentMoveDirection,
+			moveVector * (_moveSpeed * moveSpeedMultiplier), ref _currentVelocity,
+			_smoothMoveDeltaTime);
 
-    private void SetMoveDirection(Vector2 moveDirection) => 
-        _newMoveDirection = moveDirection;
+		_controller.Move(_currentMoveDirection * Time.deltaTime);
+	}
 
-    private void SetJumpActive(bool isJumpActive) => 
-        _isJumpActive = isJumpActive;
+	private void SetRotationDirection(Vector2 rotation)
+	{
+		if (_isPaused)
+			return;
+		
+		rotation = rotation * _rotateSpeed * Time.deltaTime;
 
-    private void SetRunActive(bool isActive) =>
-        _isRunActive = isActive;
+		_yRotation -= rotation.y;
+		_yRotation = Mathf.Clamp(_yRotation, -90f, 90f);
+
+		_camera.transform.localRotation = Quaternion.Euler(_yRotation, 0f, 0f);
+		_motorObject.Rotate(Vector3.up * rotation.x);
+	}
+
+	private void AddJumpForce(float value)
+	{
+		if (_controller.isGrounded && _staminaSpender.CanSpendFor(ESpendindStaminaType.Jump))
+		{
+			_jumpForce = value;
+			_staminaSpender.SpendFor(ESpendindStaminaType.Jump);
+		}
+	}
+
+	private void UpdateGravity()
+	{
+		if (_jumpForce > _gravity)
+		{
+			_animator.SetBool("IsnotGrounded", true);
+			_jumpForce += _gravity * Time.deltaTime;
+		}
+		else
+		{
+			_animator.SetBool("IsnotGrounded", false);
+		}
+	}
+
+	private void Animate() =>
+		_animator.SetFloat("Velocity", _controller.velocity.magnitude);
+
+	private void SetMoveDirection(Vector2 moveDirection) =>
+		_newMoveDirection = moveDirection;
+
+	private void SetJumpActive(bool isJumpActive) =>
+		_isJumpActive = isJumpActive;
+
+	private void SetRunActive(bool isActive) =>
+		_isRunActive = isActive;
+
+	public void Stop()
+	{
+		_isPaused = true;
+	}
+
+	public void Resume()
+	{
+		_isPaused = false;
+	}
 }
