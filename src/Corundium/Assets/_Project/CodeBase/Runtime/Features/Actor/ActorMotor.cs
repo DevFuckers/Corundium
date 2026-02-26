@@ -102,9 +102,6 @@ public class ActorMotor : NetworkBehaviour, IPausable
 
 		UpdateGravity();
 
-		if (_isPaused)
-			return;
-
 		if (_isJumpActive)
 			AddJumpForce(_jumpHeight);
 
@@ -160,6 +157,9 @@ public class ActorMotor : NetworkBehaviour, IPausable
 
 	private void AddJumpForce(float value)
 	{
+		if (_isPaused)
+			return;
+		
 		if (_controller.isGrounded && _staminaSpender.CanSpendFor(ESpendindStaminaType.Jump))
 		{
 			_jumpForce = value;
@@ -183,8 +183,16 @@ public class ActorMotor : NetworkBehaviour, IPausable
 	private void Animate() =>
 		_animator.SetFloat("Velocity", _controller.velocity.magnitude);
 
-	private void SetMoveDirection(Vector2 moveDirection) =>
+	private void SetMoveDirection(Vector2 moveDirection)
+	{
+		if (_isPaused)
+		{
+			_newMoveDirection = Vector3.zero;
+			return;
+		}
+		
 		_newMoveDirection = moveDirection;
+	}
 
 	private void SetJumpActive(bool isJumpActive) =>
 		_isJumpActive = isJumpActive;
