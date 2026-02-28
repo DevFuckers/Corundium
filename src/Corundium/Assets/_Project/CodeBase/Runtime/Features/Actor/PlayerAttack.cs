@@ -57,7 +57,7 @@ namespace DevFuckers._Project.CodeBase.Runtime.Features.Actor
             }
         }
         
-        [Client]
+        [TargetRpc]
         private void ShowHitEffect(Vector3 pos, Vector3 normal)
         {
             // Спавним искры (выполняется только у себя)

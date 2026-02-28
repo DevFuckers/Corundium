@@ -822,7 +822,7 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: 280af310a8da8714a9b4c5bec7b2ce5f, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: 50985d2dabbeec240bf4692db975ec4c, type: 2}
+      objectReference: {fileID: 2100000, guid: 30120574db575bc43b02c913e7176539, type: 2}
     - target: {fileID: 919132149155446097, guid: 280af310a8da8714a9b4c5bec7b2ce5f, type: 3}
       propertyPath: m_Name
       value: BasicIsland
@@ -1673,6 +1673,10 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: a7211483bbd794b6d85ed88576e7d85c, type: 2}
+    - target: {fileID: 1708340480977760318, guid: 12ddd8e29ee8da343814b90b00e0ec00, type: 3}
+      propertyPath: _visualModel
+      value: 
+      objectReference: {fileID: 6220799950551258343}
     - target: {fileID: 3797232945873554365, guid: 12ddd8e29ee8da343814b90b00e0ec00, type: 3}
       propertyPath: m_Name
       value: rocks
@@ -1726,6 +1730,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 12ddd8e29ee8da343814b90b00e0ec00, type: 3}
+--- !u!4 &6220799950551258343 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4609904339266588935, guid: 12ddd8e29ee8da343814b90b00e0ec00, type: 3}
+  m_PrefabInstance: {fileID: 6220799950551258342}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &6519652499195519953
 MonoBehaviour:
   m_ObjectHideFlags: 0

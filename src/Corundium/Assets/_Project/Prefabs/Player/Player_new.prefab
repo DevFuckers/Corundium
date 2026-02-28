@@ -1768,6 +1768,7 @@ MonoBehaviour:
   syncInterval: 0
   _camera: {fileID: 8885456892320347759}
   _damageAmount: 15
+  _hitEffectPrefab: {fileID: 4021103657954561961, guid: 5c755f9bc5253ea418e919994537dcc7, type: 3}
 --- !u!114 &-3182635189235004210
 MonoBehaviour:
   m_ObjectHideFlags: 0
