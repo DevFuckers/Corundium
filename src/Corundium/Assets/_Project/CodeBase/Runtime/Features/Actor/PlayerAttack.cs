@@ -11,7 +11,8 @@ namespace DevFuckers._Project.CodeBase.Runtime.Features.Actor
 
         [SerializeField] private Camera _camera;
         [SerializeField, Min(0)] private int _damageAmount = 5;
-        
+        [SerializeField] private GameObject _hitEffectPrefab;
+
         public override void OnStartLocalPlayer()
         {
             if (_inputHandler == null)
@@ -32,19 +33,35 @@ namespace DevFuckers._Project.CodeBase.Runtime.Features.Actor
             }
         }
 
-        [Command]
-        void OnAttackPerformed()
+        [Client]
+        private void OnAttackPerformed()
         {
-            Debug.Log("Attack Performed");
             Ray ray = _camera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
-            if (Physics.Raycast(ray.origin, ray.direction, out RaycastHit hit))
+            
+            OnAttackPerformedCmd(ray.origin, ray.direction);
+        }
+        
+        [Command]
+        void OnAttackPerformedCmd(Vector3 origin, Vector3 direction)
+        {
+            if (Physics.Raycast(origin, direction, out RaycastHit hit))
             {
                 Debug.Log("Hit " + hit.transform.name);
+                
                 if (hit.transform.TryGetComponent(out IDamageable damageable))
                 {
                     damageable.TakeDamage(_damageAmount);
                 }
+                
+                ShowHitEffect(hit.point, hit.normal);
             }
+        }
+        
+        [Client]
+        private void ShowHitEffect(Vector3 pos, Vector3 normal)
+        {
+            // Спавним искры (выполняется только у себя)
+            Instantiate(_hitEffectPrefab, pos, Quaternion.LookRotation(normal));
         }
     }
 }
