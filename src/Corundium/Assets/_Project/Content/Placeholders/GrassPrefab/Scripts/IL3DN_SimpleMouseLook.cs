@@ -1,7 +1,8 @@
-﻿namespace IL3DN
+﻿using System;
+using UnityEngine;
+
+namespace DevFuckers._Project.Content.Placeholders.GrassPrefab.Scripts
 {
-    using System;
-    using UnityEngine;
     /// <summary>
     /// Class provided by Standard  Assets
     /// </summary>
@@ -29,8 +30,8 @@
 
         public void LookRotation(Transform character, Transform camera)
         {
-            float yRot = Input.GetAxis("Mouse X") * XSensitivity;
-            float xRot = Input.GetAxis("Mouse Y") * YSensitivity;
+            float yRot = UnityEngine.Input.GetAxis("Mouse X") * XSensitivity;
+            float xRot = UnityEngine.Input.GetAxis("Mouse Y") * YSensitivity;
 
             m_CharacterTargetRot *= Quaternion.Euler(0f, yRot, 0f);
             m_CameraTargetRot *= Quaternion.Euler(-xRot, 0f, 0f);
@@ -73,11 +74,11 @@
 
         private void InternalLockUpdate()
         {
-            if (Input.GetKeyUp(KeyCode.Escape))
+            if (UnityEngine.Input.GetKeyUp(KeyCode.Escape))
             {
                 m_cursorIsLocked = false;
             }
-            else if (Input.GetMouseButtonUp(0))
+            else if (UnityEngine.Input.GetMouseButtonUp(0))
             {
                 m_cursorIsLocked = true;
             }

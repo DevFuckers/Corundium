@@ -1,28 +1,35 @@
+using DevFuckers._Project.CodeBase.Runtime.Common.Constants;
+using DevFuckers._Project.CodeBase.Runtime.Common.Services.LoadingCurtain;
+using DevFuckers._Project.CodeBase.Runtime.Common.Services.SceneLoader;
+using DevFuckers._Project.CodeBase.Runtime.Common.Services.StateMachine;
 using UnityEngine;
 using Zenject;
 
-public class GameMenuState : IState
+namespace DevFuckers._Project.CodeBase.Runtime.Infrastructure.GameApp.GameStateMachine.States
 {
-    private readonly ISceneLoader _sceneLoader;
-    private readonly ILoadingCurtain _loadingCurtain;
-
-    [Inject]
-    public GameMenuState(ISceneLoader sceneLoader, ILoadingCurtain loadingCurtain)
+    public class GameMenuState : IState
     {
-        _sceneLoader = sceneLoader;
-        _loadingCurtain = loadingCurtain;
-    }
+        private readonly ISceneLoader _sceneLoader;
+        private readonly ILoadingCurtain _loadingCurtain;
 
-    public void Enter()
-    {
-        Debug.Log("Menu  State");
+        [Inject]
+        public GameMenuState(ISceneLoader sceneLoader, ILoadingCurtain loadingCurtain)
+        {
+            _sceneLoader = sceneLoader;
+            _loadingCurtain = loadingCurtain;
+        }
+
+        public void Enter()
+        {
+            Debug.Log("Menu  State");
         
-        _sceneLoader.LoadScene(Scenes.MenuName);
-        _loadingCurtain.Hide();
-    }
+            _sceneLoader.LoadScene(Scenes.MenuName);
+            _loadingCurtain.Hide();
+        }
 
-    public void Exit()
-    {
-        Debug.Log("Exit Menu  State");
+        public void Exit()
+        {
+            Debug.Log("Exit Menu  State");
+        }
     }
 }

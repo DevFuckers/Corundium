@@ -1,6 +1,7 @@
-namespace IL3DN
+using UnityEngine;
+
+namespace DevFuckers._Project.Content.Placeholders.GrassPrefab.Scripts
 {
-    using UnityEngine;
     [ExecuteInEditMode]
 
     public class IL3DN_Wind : MonoBehaviour

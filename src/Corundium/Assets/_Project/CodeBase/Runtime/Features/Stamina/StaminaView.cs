@@ -1,3 +1,5 @@
+using DevFuckers._Project.CodeBase.Runtime.Common.UI.Bars;
+using DevFuckers._Project.CodeBase.Runtime.Features.HealthSystem;
 using UnityEngine;
 using Zenject;
 
@@ -5,7 +7,7 @@ namespace DevFuckers._Project.CodeBase.Runtime.Features.Stamina
 {
     public class StaminaView : MonoBehaviour 
     {
-        [SerializeField] private LocalPlayerBarUI _uiBar;
+        [SerializeField] private LocalBarUI _uiBar;
         
         [Inject] private Stamina _model;
         
