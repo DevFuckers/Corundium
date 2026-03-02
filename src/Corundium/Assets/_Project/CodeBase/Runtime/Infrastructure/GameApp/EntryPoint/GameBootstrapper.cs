@@ -22,6 +22,7 @@ namespace DevFuckers._Project.CodeBase.Runtime.Infrastructure.GameApp.EntryPoint
             _gameStateMachine.RegisterState(_stateFactory.Create<GameBootstrapState>());
             _gameStateMachine.RegisterState(_stateFactory.Create<GameMenuState>());
             _gameStateMachine.RegisterState(_stateFactory.Create<GamePlayLoopState>());
+            _gameStateMachine.RegisterState(_stateFactory.Create<GameExitState>());
 
             _gameStateMachine.EnterIn<GameBootstrapState>();
 

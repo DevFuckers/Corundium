@@ -1,5 +1,7 @@
+using DevFuckers._Project.CodeBase.Runtime.Common.Services.ConfigProvider;
 using DevFuckers._Project.CodeBase.Runtime.Common.Services.Cursor;
 using DevFuckers._Project.CodeBase.Runtime.Common.Services.Input;
+using DevFuckers._Project.CodeBase.Runtime.Features.Actor.Data;
 using DevFuckers._Project.CodeBase.Runtime.Features.Pause;
 using DevFuckers._Project.CodeBase.Runtime.Features.Stamina;
 using Mirror;
@@ -32,26 +34,36 @@ namespace DevFuckers._Project.CodeBase.Runtime.Features.Actor
 		private Vector3 _currentVelocity;
 		private float _yRotation;
 		private float _jumpForce;
-
+		private ActorMotorData _data;
+		
 		[SerializeField] private bool _isJumpActive = false;
 		[SerializeField] private bool _isMoveActive = false;
 		private bool _isRunActive = false;
 		private bool _isPaused = false;
+		private IConfigProvider _configProvider;
 
 		[Inject]
 		public void Construct(
 			IInputHandler inputHandler,
 			ICursorService cursorService,
 			IStaminaSpender staminaSpender,
-			IPauseController pauseController)
+			IPauseController pauseController,
+			IConfigProvider  configProvider)
 		{
 			_staminaSpender = staminaSpender;
 			_inputHandler = inputHandler;
 			_pauseController = pauseController;
+			_configProvider = configProvider;
 		}
 
-		private void Start()
+		private async void Start()
 		{
+			// пока ничего с этим не делаю
+			_data = await _configProvider.GetConfigAsync<ActorMotorData>("ActorMotorData");
+			
+			if (_data == null)
+				Debug.LogWarning("ActorMotor::Start() ActorMotorData not found");
+			
 			_isMoveActive = true;
 			_motorObject = transform;
 

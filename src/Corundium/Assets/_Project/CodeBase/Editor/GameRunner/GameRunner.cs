@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace CodeBase.Infrastructure
+namespace DevFuckers._Project.CodeBase.Editor.GameRunner
 {
     public class GameRunner
     {

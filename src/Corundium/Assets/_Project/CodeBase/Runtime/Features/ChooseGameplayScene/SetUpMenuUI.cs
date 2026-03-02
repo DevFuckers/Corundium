@@ -1,9 +1,10 @@
-using DevFuckers._Project.CodeBase.Runtime.Common.Services.ExitGame;
+using DevFuckers._Project.CodeBase.Runtime.Common.Services.EventBus;
 using DevFuckers._Project.CodeBase.Runtime.Network;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
+using Event = CodeBase.Event;
 
 namespace DevFuckers._Project.CodeBase.Runtime.Features.ChooseGameplayScene
 {
@@ -17,22 +18,19 @@ namespace DevFuckers._Project.CodeBase.Runtime.Features.ChooseGameplayScene
         [SerializeField] private TMP_InputField _inputAddressField;
 
         private CustomNetworkManager _networkManager;
-        private OnlineSceneSetter _sceneSetter;
-        private ExitGame _exitGame;
+        private EventBus _eventBus;
 
         [Inject]
-        public void Construct(CustomNetworkManager networkManager)
+        public void Construct(CustomNetworkManager networkManager, EventBus eventBus)
         {
             _networkManager = networkManager;
-
-            _sceneSetter = new OnlineSceneSetter(networkManager);
-            _exitGame = new ExitGame();
+            _eventBus = eventBus;
         }
 
         private void OnEnable()
         {
-            _sceneSelector.SceneSelected += _sceneSetter.SetOnlineScene;
-            _exitButton.onClick.AddListener(_exitGame.CloseApp);
+            _sceneSelector.SceneSelected += SetOnlineScene;
+            _exitButton.onClick.AddListener(() => _eventBus.Trigger(Event.Quit));
         
             _startHostButton.onClick.AddListener(_networkManager.StartHost);
             _startClientButton.onClick.AddListener(_networkManager.StartClient);
@@ -41,12 +39,17 @@ namespace DevFuckers._Project.CodeBase.Runtime.Features.ChooseGameplayScene
 
         private void OnDisable()
         {
-            _sceneSelector.SceneSelected -= _sceneSetter.SetOnlineScene;
+            _sceneSelector.SceneSelected -= SetOnlineScene;
             _exitButton.onClick.RemoveAllListeners();
         
             _startClientButton.onClick.RemoveAllListeners();
             _startHostButton.onClick.RemoveAllListeners();
             _inputAddressField.onEndEdit.RemoveAllListeners();
+        }
+
+        private void SetOnlineScene(string sceneName)
+        {
+            _networkManager.onlineScene = sceneName;
         }
     }
 }

@@ -1,7 +1,9 @@
 using DevFuckers._Project.CodeBase.Runtime.Common.Factories.StateFactory;
 using DevFuckers._Project.CodeBase.Runtime.Common.Services.AssetProvider;
 using DevFuckers._Project.CodeBase.Runtime.Common.Services.BuildScenesProvider;
+using DevFuckers._Project.CodeBase.Runtime.Common.Services.ConfigProvider;
 using DevFuckers._Project.CodeBase.Runtime.Common.Services.Cursor;
+using DevFuckers._Project.CodeBase.Runtime.Common.Services.EventBus;
 using DevFuckers._Project.CodeBase.Runtime.Common.Services.Input;
 using DevFuckers._Project.CodeBase.Runtime.Common.Services.SceneLoader;
 using Zenject;
@@ -18,6 +20,8 @@ namespace DevFuckers._Project.CodeBase.Runtime.Infrastructure.GameApp.EntryPoint
             BindAssetProvider();
             BindGameStateMachine();
             BindSceneProvider();
+            BindConfigProvider();
+            BindEventBus();
         }
 
         private void BindInputService() => 
@@ -40,5 +44,11 @@ namespace DevFuckers._Project.CodeBase.Runtime.Infrastructure.GameApp.EntryPoint
     
         private void BindSceneProvider() =>
             Container.Bind<BuildScenesProvider>().AsSingle();
+        
+        private void BindConfigProvider() =>
+            Container.BindInterfacesAndSelfTo<ConfigProvider>().AsSingle();
+        
+        private void BindEventBus() =>
+            Container.Bind<EventBus>().AsSingle();
     }
 }

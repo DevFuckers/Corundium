@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace CodeBase.Infrastructure
+namespace DevFuckers._Project.CodeBase.Editor.GameRunner
 {
     [CreateAssetMenu(fileName = "GameRunnerConfig", menuName = "Configs/GameRunnerConfig")]
     public class GameRunnerConfig : ScriptableObject

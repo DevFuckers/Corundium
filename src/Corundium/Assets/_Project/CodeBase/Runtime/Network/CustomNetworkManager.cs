@@ -1,9 +1,9 @@
 using System;
-using DevFuckers._Project.CodeBase.Runtime.Infrastructure.GameApp.GameStateMachine;
-using DevFuckers._Project.CodeBase.Runtime.Infrastructure.GameApp.GameStateMachine.States;
+using DevFuckers._Project.CodeBase.Runtime.Common.Services.EventBus;
 using Mirror;
 using UnityEngine;
 using Zenject;
+using Event = CodeBase.Event;
 using Random = UnityEngine.Random;
 
 namespace DevFuckers._Project.CodeBase.Runtime.Network
@@ -15,9 +15,14 @@ namespace DevFuckers._Project.CodeBase.Runtime.Network
 
     public class CustomNetworkManager : NetworkManager
     {
-        [Inject] private GameStateMachine _stateMachine;
-        [Inject] private DiContainer _container;
+        private EventBus _eventBus;
 
+        [Inject]
+        private void Construct(EventBus eventBus)
+        {
+            _eventBus = eventBus;
+        }
+        
         public override void Start()
         {
             base.Start();
@@ -40,7 +45,7 @@ namespace DevFuckers._Project.CodeBase.Runtime.Network
             };
 
             NetworkClient.Send(randomPlayerID);
-            _stateMachine.EnterIn<GamePlayLoopState>();
+            _eventBus.Trigger(Event.StartGameplay);
         }
     
         void OnCreateCharacter(NetworkConnectionToClient conn, PlayerID id)
