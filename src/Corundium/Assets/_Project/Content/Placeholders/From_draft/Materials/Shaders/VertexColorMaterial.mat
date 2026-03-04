@@ -88,7 +88,7 @@ Material:
     - _BUILTIN_QueueOffset: 0
     - _Blend: 0
     - _BlendModePreserveSpecular: 1
-    - _Brightness: 0.5
+    - _Brightness: 0.28
     - _BumpScale: 1
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0

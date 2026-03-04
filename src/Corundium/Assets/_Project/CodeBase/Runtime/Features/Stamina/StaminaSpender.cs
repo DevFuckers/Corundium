@@ -13,27 +13,27 @@ namespace DevFuckers._Project.CodeBase.Runtime.Features.Stamina
 
         public float StaminaValue => _stamina.Value;
 
-        public void SpendFor(string spendingId)
+        public void SpendFor(ESpendindStaminaType spendingType)
         {
-            float value = _configProvider.GetSpendingValueFor(spendingId);
+            float value = _configProvider.GetSpendingValueFor(spendingType);
             _stamina.Value -= value;
         }   
     
-        public void SpendFor(string spendingId, float duration)
+        public void SpendFor(ESpendindStaminaType spendingType, float duration)
         {
-            float value = _configProvider.GetSpendingValueFor(spendingId);
+            float value = _configProvider.GetSpendingValueFor(spendingType);
             _stamina.Value -= value * duration;
         }
     
-        public bool CanSpendFor(string spendingId)
+        public bool CanSpendFor(ESpendindStaminaType spendingType)
         {
-            float value = _configProvider.GetSpendingValueFor(spendingId);
+            float value = _configProvider.GetSpendingValueFor(spendingType);
             return _stamina.Value >= value;
         }
     
-        public bool CanSpendFor(string spendingId, float duration)
+        public bool CanSpendFor(ESpendindStaminaType spendingType, float duration)
         {
-            float value = _configProvider.GetSpendingValueFor(spendingId);
+            float value = _configProvider.GetSpendingValueFor(spendingType);
             return _stamina.Value >= value * duration;
         }
     }

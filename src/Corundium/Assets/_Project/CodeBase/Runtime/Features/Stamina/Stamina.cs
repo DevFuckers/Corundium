@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace DevFuckers._Project.CodeBase.Runtime.Features.Stamina
 {
-    public class Stamina : IStamina
+    public class Stamina
     {
         public event Action Changed;
 

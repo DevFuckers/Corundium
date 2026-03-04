@@ -1,4 +1,3 @@
-using DevFuckers._Project.CodeBase.Runtime.Features.Stamina.Installer;
 using UnityEngine;
 
 namespace DevFuckers._Project.CodeBase.Runtime.Features.Stamina.Test
@@ -20,7 +19,7 @@ namespace DevFuckers._Project.CodeBase.Runtime.Features.Stamina.Test
 
         private void OnTriggerEnter(Collider other)
         {
-            if (other.TryGetComponent(out IStamina stamina))
+            if (other.TryGetComponent(out Stamina stamina))
             {
                 stamina.Value += _value;
             }
