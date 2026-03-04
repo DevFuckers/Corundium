@@ -12,22 +12,33 @@ namespace DevFuckers._Project.CodeBase.Runtime.Features.QuickMenu
 {
     public class QuickMenuController : MonoBehaviour
     {
-        [Inject] private IInputHandler _inputHandler;
-        [Inject] private IPauseController _pauseController;
-        [Inject] private ICursorService _cursorService;
-        [Inject] private UIManager.UIManager _uiManager;
-        [Inject] private SceneStateMachine _sceneStateMachine;
+        private IInputHandler _inputHandler;
+        private IPauseController _pauseController;
+        private ICursorService _cursorService;
+        private UIManager.UIManager _uiManager;
+        private SceneStateMachine _sceneStateMachine;
 
-        [SerializeField] private GameObject _quickMenuPanel;
         // [SerializeField] private Button _settingsButton;
         // [SerializeField] private Button _closeSettingsPanelButton;
         // [SerializeField] private GameObject _settingsPanelObject;
+        [SerializeField] private GameObject _quickMenuPanel;
         [SerializeField] private Button _exitGameButton;
         [SerializeField] private Button _continueButton;
 
         private bool _isMenuOpened = false;
         private bool _isSettingsPanelOpened = false;
 
+        [Inject]
+        public void Construct(IInputHandler inputHandler, IPauseController pauseController, ICursorService cursorService, 
+            UIManager.UIManager uiManager, SceneStateMachine sceneStateMachine)
+        {
+            _inputHandler = inputHandler;
+            _pauseController = pauseController;
+            _cursorService = cursorService;
+            _uiManager = uiManager;
+            _sceneStateMachine = sceneStateMachine;
+        }
+        
         void OnValidate()
         {
             if (_exitGameButton == null)
@@ -45,8 +56,8 @@ namespace DevFuckers._Project.CodeBase.Runtime.Features.QuickMenu
 
         private void Start()
         {
-            // при старте игры выключаем курсор
-            _cursorService.SetCursorVisibility(false);
+            // при старте игры добавляем причину выключить курсор
+            _cursorService.AddReasonToHide(nameof(QuickMenuController));
         }
     
         void OnEnable()
@@ -102,7 +113,7 @@ namespace DevFuckers._Project.CodeBase.Runtime.Features.QuickMenu
 
             _uiManager.SetState(UIState.Normal);
             _pauseController.PerformResume();
-            _cursorService.SetCursorVisibility(false);
+            _cursorService.AddReasonToHide(nameof(QuickMenuController));
         }
 
         private void OpenMenu()
@@ -115,7 +126,7 @@ namespace DevFuckers._Project.CodeBase.Runtime.Features.QuickMenu
 
             _pauseController.PerformStop();
             _uiManager.SetState(UIState.QuickMenuOpen);
-            _cursorService.SetCursorVisibility(true);
+            _cursorService.RemoveReasonToHide(nameof(QuickMenuController));
         }
 
         private void OnContinueClicked()
