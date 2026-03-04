@@ -1,6 +1,7 @@
-namespace IL3DN
+using UnityEngine;
+
+namespace DevFuckers._Project.Content.Placeholders.GrassPrefab.Scripts
 {
-    using UnityEngine;
     /// <summary>
     /// Override player sound when walking in different environments
     /// Attach this to a trigger

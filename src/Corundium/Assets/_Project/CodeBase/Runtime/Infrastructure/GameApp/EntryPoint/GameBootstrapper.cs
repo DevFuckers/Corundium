@@ -1,26 +1,32 @@
+using DevFuckers._Project.CodeBase.Runtime.Common.Factories.StateFactory;
+using DevFuckers._Project.CodeBase.Runtime.Infrastructure.GameApp.GameStateMachine.States;
 using UnityEngine;
 using Zenject;
 
-public class GameBootstrapper : MonoBehaviour
+namespace DevFuckers._Project.CodeBase.Runtime.Infrastructure.GameApp.EntryPoint
 {
-    private GameStateMachine _gameStateMachine;
-    private StateFactory _stateFactory;
-
-    [Inject]
-    public void Construct(GameStateMachine gameStateMachine, StateFactory stateFactory)
+    public class GameBootstrapper : MonoBehaviour
     {
-        _gameStateMachine = gameStateMachine;
-        _stateFactory = stateFactory;
-    }
+        private GameStateMachine.GameStateMachine _gameStateMachine;
+        private StateFactory _stateFactory;
 
-    private void Start()
-    {
-        _gameStateMachine.RegisterState(_stateFactory.Create<GameBootstrapState>());
-        _gameStateMachine.RegisterState(_stateFactory.Create<GameMenuState>());
-        _gameStateMachine.RegisterState(_stateFactory.Create<GamePlayLoopState>());
+        [Inject]
+        public void Construct(GameStateMachine.GameStateMachine gameStateMachine, StateFactory stateFactory)
+        {
+            _gameStateMachine = gameStateMachine;
+            _stateFactory = stateFactory;
+        }
 
-        _gameStateMachine.EnterIn<GameBootstrapState>();
+        private void Start()
+        {
+            _gameStateMachine.RegisterState(_stateFactory.Create<GameBootstrapState>());
+            _gameStateMachine.RegisterState(_stateFactory.Create<GameMenuState>());
+            _gameStateMachine.RegisterState(_stateFactory.Create<GamePlayLoopState>());
+            _gameStateMachine.RegisterState(_stateFactory.Create<GameExitState>());
 
-        DontDestroyOnLoad(this);
+            _gameStateMachine.EnterIn<GameBootstrapState>();
+
+            DontDestroyOnLoad(this);
+        }
     }
 }

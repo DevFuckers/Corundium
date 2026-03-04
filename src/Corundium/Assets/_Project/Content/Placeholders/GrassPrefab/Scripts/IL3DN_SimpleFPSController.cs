@@ -1,6 +1,7 @@
-namespace IL3DN
+using UnityEngine;
+
+namespace DevFuckers._Project.Content.Placeholders.GrassPrefab.Scripts
 {
-    using UnityEngine;
     using Random = UnityEngine.Random;
     [RequireComponent(typeof(CharacterController))]
     [RequireComponent(typeof(AudioSource))]
@@ -58,7 +59,7 @@ namespace IL3DN
             // the jump state needs to read here to make sure it is not missed
             if (!m_Jump)
             {
-                m_Jump = Input.GetButtonDown("Jump");
+                m_Jump = UnityEngine.Input.GetButtonDown("Jump");
             }
 
             if (!m_PreviouslyGrounded && m_CharacterController.isGrounded)
@@ -215,13 +216,13 @@ namespace IL3DN
         private void GetInput(out float speed)
         {
             // Read input
-            float horizontal = Input.GetAxis("Horizontal");
-            float vertical = Input.GetAxis("Vertical");
+            float horizontal = UnityEngine.Input.GetAxis("Horizontal");
+            float vertical = UnityEngine.Input.GetAxis("Vertical");
             bool waswalking = m_IsWalking;
 #if !MOBILE_INPUT
             // On standalone builds, walk/run speed is modified by a key press.
             // keep track of whether or not the character is walking or running
-            m_IsWalking = !Input.GetKey(KeyCode.LeftShift);
+            m_IsWalking = !UnityEngine.Input.GetKey(KeyCode.LeftShift);
 #endif
             // set the desired speed to be walking or running
             speed = m_IsWalking ? m_WalkSpeed : m_RunSpeed;

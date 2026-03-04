@@ -1,25 +1,30 @@
+using DevFuckers._Project.CodeBase.Runtime.Common.Services.StateMachine;
+using DevFuckers._Project.CodeBase.Runtime.Features.Pause;
 using Zenject;
 
-public class EntryGameplayState : IState
+namespace DevFuckers._Project.CodeBase.Runtime.Infrastructure.GameplayScene.GameplayStateMachine.States
 {
-    private readonly SceneStateMachine _sceneStateMachine;
-    private readonly IPauseService _pauseService;
-
-    [Inject]
-    public EntryGameplayState(SceneStateMachine sceneStateMachine, IPauseService pauseService)
+    public class EntryGameplayState : IState
     {
-        _sceneStateMachine = sceneStateMachine;
-        _pauseService = pauseService;
-    }
+        private readonly SceneStateMachine _sceneStateMachine;
+        private readonly IPauseController _pauseController;
 
-    public void Enter()
-    {
-        // init services
-        _pauseService.PerformResume();
-        _sceneStateMachine.EnterIn<PlayGameplayState>();
-    }
+        [Inject]
+        public EntryGameplayState(SceneStateMachine sceneStateMachine, IPauseController pauseController)
+        {
+            _sceneStateMachine = sceneStateMachine;
+            _pauseController = pauseController;
+        }
 
-    public void Exit()
-    {
+        public void Enter()
+        {
+            // init services
+            _pauseController.PerformResume();
+            _sceneStateMachine.EnterIn<PlayGameplayState>();
+        }
+
+        public void Exit()
+        {
+        }
     }
 }

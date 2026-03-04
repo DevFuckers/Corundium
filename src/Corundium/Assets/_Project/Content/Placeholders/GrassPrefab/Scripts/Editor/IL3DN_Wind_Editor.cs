@@ -1,4 +1,6 @@
-﻿namespace IL3DN
+﻿using DevFuckers._Project.Content.Placeholders.GrassPrefab.Scripts;
+
+namespace IL3DN
 {
     using UnityEngine;
     using UnityEditor;

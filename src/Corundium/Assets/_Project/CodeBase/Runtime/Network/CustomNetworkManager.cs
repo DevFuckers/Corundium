@@ -1,60 +1,68 @@
 using System;
-using DevFuckers;
+using DevFuckers._Project.CodeBase.Runtime.Common.Services.EventBus;
 using Mirror;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using Zenject;
+using Event = CodeBase.Event;
 using Random = UnityEngine.Random;
 
-public struct PlayerID : NetworkMessage
+namespace DevFuckers._Project.CodeBase.Runtime.Network
 {
-    public int ID;
-}
-
-public class CustomNetworkManager : NetworkManager
-{
-    [Inject] private GameStateMachine _stateMachine;
-    [Inject] private DiContainer _container;
-
-    public override void Start()
+    public struct PlayerID : NetworkMessage
     {
-        base.Start();
-        autoCreatePlayer = false;
+        public int ID;
     }
 
-    public override void OnStartServer()
+    public class CustomNetworkManager : NetworkManager
     {
-        base.OnStartServer();
-        NetworkServer.RegisterHandler<PlayerID>(OnCreateCharacter);
-    }
+        private EventBus _eventBus;
 
-    public override void OnClientConnect()
-    {
-        base.OnClientConnect();
-
-        var randomPlayerID = new PlayerID()
+        [Inject]
+        private void Construct(EventBus eventBus)
         {
-            ID = Random.Range(1, 1000)
-        };
+            _eventBus = eventBus;
+        }
+        
+        public override void Start()
+        {
+            base.Start();
+            autoCreatePlayer = false;
+        }
 
-        NetworkClient.Send(randomPlayerID);
-        _stateMachine.EnterIn<GamePlayLoopState>();
-    }
+        public override void OnStartServer()
+        {
+            base.OnStartServer();
+            NetworkServer.RegisterHandler<PlayerID>(OnCreateCharacter);
+        }
+
+        public override void OnClientConnect()
+        {
+            base.OnClientConnect();
+
+            var randomPlayerID = new PlayerID()
+            {
+                ID = Random.Range(1, 1000)
+            };
+
+            NetworkClient.Send(randomPlayerID);
+            _eventBus.Trigger(Event.StartGameplay);
+        }
     
-    void OnCreateCharacter(NetworkConnectionToClient conn, PlayerID id)
-    {
-        if (playerPrefab == null)
-            throw new NullReferenceException("PLAYER prefab is empty");
+        void OnCreateCharacter(NetworkConnectionToClient conn, PlayerID id)
+        {
+            if (playerPrefab == null)
+                throw new NullReferenceException("PLAYER prefab is empty");
 
-        var t = FindFirstObjectByType<NetworkStartPosition>(); // костыль
-        GameObject playerObject;
+            var t = FindFirstObjectByType<NetworkStartPosition>(); // костыль
+            GameObject playerObject;
         
         
-        if(t != null)
-            playerObject = Instantiate(playerPrefab, t.transform.position, Quaternion.identity); 
-        else
-            playerObject = Instantiate(playerPrefab); 
+            if(t != null)
+                playerObject = Instantiate(playerPrefab, t.transform.position, Quaternion.identity); 
+            else
+                playerObject = Instantiate(playerPrefab); 
         
-        NetworkServer.AddPlayerForConnection(conn, playerObject);
+            NetworkServer.AddPlayerForConnection(conn, playerObject);
+        }
     }
 }

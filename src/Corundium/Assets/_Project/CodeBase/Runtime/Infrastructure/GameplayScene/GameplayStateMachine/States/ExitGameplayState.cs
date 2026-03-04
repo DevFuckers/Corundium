@@ -1,41 +1,48 @@
+using DevFuckers._Project.CodeBase.Runtime.Common.Services.StateMachine;
+using DevFuckers._Project.CodeBase.Runtime.Infrastructure.GameApp.GameStateMachine;
+using DevFuckers._Project.CodeBase.Runtime.Infrastructure.GameApp.GameStateMachine.States;
+using DevFuckers._Project.CodeBase.Runtime.Network;
 using Mirror;
 using UnityEngine;
 using Zenject;
 
-public class ExitGameplayState : IState
+namespace DevFuckers._Project.CodeBase.Runtime.Infrastructure.GameplayScene.GameplayStateMachine.States
 {
-    private readonly GameStateMachine _stateMachine;
-    private readonly CustomNetworkManager _networkManager;
-
-    [Inject]
-    public ExitGameplayState(GameStateMachine stateMachine, CustomNetworkManager networkManager)
+    public class ExitGameplayState : IState
     {
-        _stateMachine = stateMachine;
-        _networkManager = networkManager;
-    }
+        private readonly GameStateMachine _stateMachine;
+        private readonly CustomNetworkManager _networkManager;
 
-    public void Enter()
-    {
-        // save game
-        // clear subscriptions
-        // release the addressables assets
+        [Inject]
+        public ExitGameplayState(GameStateMachine stateMachine, CustomNetworkManager networkManager)
+        {
+            _stateMachine = stateMachine;
+            _networkManager = networkManager;
+        }
 
-        MainStopServer();
-        _stateMachine.EnterIn<GameMenuState>();
-    }
+        public void Enter()
+        {
+            // save game
+            // clear subscriptions
+            // release the addressables assets
 
-    public void Exit()
-    {
-    }
+            MainStopServer();
+            _stateMachine.EnterIn<GameMenuState>();
+        }
 
-    private void MainStopServer()
-    {
-        if (NetworkClient.active)
-            _networkManager.StopClient();
+        public void Exit()
+        {
+        }
+
+        private void MainStopServer()
+        {
+            if (NetworkClient.active)
+                _networkManager.StopClient();
             
-        if (NetworkServer.active)
-            NetworkServer.Shutdown();
+            if (NetworkServer.active)
+                NetworkServer.Shutdown();
         
-        Debug.Log("stop client/host, Client: " + NetworkClient.active + " Server: "  + NetworkServer.active);
+            Debug.Log("stop client/host, Client: " + NetworkClient.active + " Server: "  + NetworkServer.active);
+        }
     }
 }

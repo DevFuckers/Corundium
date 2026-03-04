@@ -1,3 +1,4 @@
+using DevFuckers._Project.CodeBase.Runtime.Common.UI.Bars;
 using Mirror;
 using UnityEngine;
 
@@ -8,7 +9,7 @@ namespace DevFuckers._Project.CodeBase.Runtime.Features.HealthSystem
 		[SerializeField, Min(1)] private int _maxHealth;
 	
 		[SerializeField] private WorldBarUI worldBarUI;
-		[SerializeField] private LocalPlayerBarUI localPlayerBarUI;
+		[SerializeField] private LocalBarUI localBarUI;
 	
 		[SyncVar(hook = "OnHealthChanged")]
 		private int _currentHealth;
@@ -21,8 +22,8 @@ namespace DevFuckers._Project.CodeBase.Runtime.Features.HealthSystem
 		public override void OnStartClient()
 		{
 			// выключаем у всех, кроме нашего клиента, локальный хп бар
-			if (!isLocalPlayer && localPlayerBarUI != null)
-				localPlayerBarUI.gameObject.SetActive(false);
+			if (!isLocalPlayer && localBarUI != null)
+				localBarUI.gameObject.SetActive(false);
 			
 			// отключаем глобальный хп бар только у себя, остальные могут видеть его
 			if (isLocalPlayer && worldBarUI != null)
@@ -46,7 +47,7 @@ namespace DevFuckers._Project.CodeBase.Runtime.Features.HealthSystem
 			Debug.Log($"Health changed: {oldHealth} → {newHealth}");
 		
 			worldBarUI.UpdateUI(newHealth, _maxHealth);
-			localPlayerBarUI.UpdateUI(newHealth, _maxHealth);
+			localBarUI.UpdateUI(newHealth, _maxHealth);
 		}
 	}
 }

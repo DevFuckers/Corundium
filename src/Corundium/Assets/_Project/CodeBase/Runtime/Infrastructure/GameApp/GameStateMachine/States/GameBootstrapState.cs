@@ -1,35 +1,41 @@
+using DevFuckers._Project.CodeBase.Runtime.Common.Services.Input;
+using DevFuckers._Project.CodeBase.Runtime.Common.Services.LoadingCurtain;
+using DevFuckers._Project.CodeBase.Runtime.Common.Services.StateMachine;
 using UnityEngine;
 using Zenject;
 
-public class GameBootstrapState : IState
+namespace DevFuckers._Project.CodeBase.Runtime.Infrastructure.GameApp.GameStateMachine.States
 {
-    private readonly GameStateMachine _gameStateMachine;
-    private readonly InputHandler _inputHandler;
-    private readonly ILoadingCurtain _loadingCurtain;
-
-    [Inject]
-    public GameBootstrapState(GameStateMachine gameStateMachine, InputHandler inputHandler, ILoadingCurtain loadingCurtain)
+    public class GameBootstrapState : IState
     {
-        _gameStateMachine = gameStateMachine;
-        _inputHandler = inputHandler;
-        _loadingCurtain = loadingCurtain;
-    }
+        private readonly GameStateMachine _gameStateMachine;
+        private readonly InputHandler _inputHandler;
+        private readonly ILoadingCurtain _loadingCurtain;
 
-    public void Enter()
-    {
-        Debug.Log("Boostrap State");
-        
-        Application.targetFrameRate = 60;
-        
-        // init services 
-        _inputHandler.Enable();
-        _loadingCurtain.Show();
+        [Inject]
+        public GameBootstrapState(GameStateMachine gameStateMachine, InputHandler inputHandler, ILoadingCurtain loadingCurtain)
+        {
+            _gameStateMachine = gameStateMachine;
+            _inputHandler = inputHandler;
+            _loadingCurtain = loadingCurtain;
+        }
 
-        _gameStateMachine.EnterIn<GameMenuState>();
-    }
-
-    public void Exit()
-    {
+        public void Enter()
+        {
+            Debug.Log("Boostrap State");
         
+            Application.targetFrameRate = 60;
+        
+            // init services 
+            _inputHandler.Enable();
+            _loadingCurtain.Show();
+
+            _gameStateMachine.EnterIn<GameMenuState>();
+        }
+
+        public void Exit()
+        {
+        
+        }
     }
 }
