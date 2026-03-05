@@ -19,14 +19,13 @@ namespace DevFuckers._Project.CodeBase.Runtime.Infrastructure.GameRunner
 
         private static bool IsEnabled()
         {
-            string path = "";
+            var config = Resources.Load<GameRunnerConfig>("GameRunnerConfig");
 
-            var temp = Resources.LoadAll<GameRunnerConfig>(path);
-            
-            if (temp.Length == 0)
+            if (config == null)
+            {
+                Debug.LogWarning("GameRunnerConfig не найден в папке Resources! Проверьте путь.");
                 return true;
-            
-            var config = temp[0];
+            }
             
             return config.Enabled;
         }
