@@ -9,49 +9,52 @@ using Event = CodeBase.Event;
 
 namespace DevFuckers._Project.CodeBase.Runtime.Infrastructure.GameApp.GameStateMachine.States
 {
+    /// <summary>
+    ///     Menu state responsible for loading the main menu scene and handling menu events.
+    /// </summary>
     public class GameMenuState : IState
-    {
-        private readonly ISceneLoader _sceneLoader;
-        private readonly ILoadingCurtain _loadingCurtain;
-        private readonly EventBus _eventBus;
-        private readonly GameStateMachine _stateMachine;
+	{
+		readonly EventBus _eventBus;
+		readonly ILoadingCurtain _loadingCurtain;
+		readonly ISceneLoader _sceneLoader;
+		readonly GameStateMachine _stateMachine;
 
-        [Inject]
-        public GameMenuState(ISceneLoader sceneLoader, ILoadingCurtain loadingCurtain, EventBus eventBus, GameStateMachine stateMachine)
-        {
-            _sceneLoader = sceneLoader;
-            _loadingCurtain = loadingCurtain;
-            _eventBus = eventBus;
-            _stateMachine = stateMachine;
-        }
+		[Inject]
+		public GameMenuState(ISceneLoader sceneLoader, ILoadingCurtain loadingCurtain, EventBus eventBus, GameStateMachine stateMachine)
+		{
+			_sceneLoader = sceneLoader;
+			_loadingCurtain = loadingCurtain;
+			_eventBus = eventBus;
+			_stateMachine = stateMachine;
+		}
 
-        public void Enter()
-        {
-            Debug.Log("Menu  State");
-        
-            _sceneLoader.LoadScene(Scenes.MenuName);
-            _loadingCurtain.Hide();
-            
-            _eventBus.Subscribe(Event.StartGameplay, GoToGameplay);
-            _eventBus.Subscribe(Event.Quit, ExitMenu);
-        }
+		public void Enter()
+		{
+			Debug.Log("Menu  State");
 
-        public void Exit()
-        {
-            Debug.Log("Exit Menu  State");
-            
-            _eventBus.Unsubscribe(Event.StartGameplay, GoToGameplay);
-            _eventBus.Unsubscribe(Event.Quit, ExitMenu);
-        }
+			_sceneLoader.LoadScene(Scenes.MenuName);
+			_loadingCurtain.Hide();
 
-        private void GoToGameplay()
-        {
-            _stateMachine.EnterIn<GamePlayLoopState>();
-        }
+			_eventBus.Subscribe(Event.StartGameplay, GoToGameplay);
+			_eventBus.Subscribe(Event.Quit, ExitMenu);
+		}
 
-        private void ExitMenu()
-        {
-            _stateMachine.EnterIn<GameExitState>();
-        }
-    }
+		public void Exit()
+		{
+			Debug.Log("Exit Menu  State");
+
+			_eventBus.Unsubscribe(Event.StartGameplay, GoToGameplay);
+			_eventBus.Unsubscribe(Event.Quit, ExitMenu);
+		}
+
+		void GoToGameplay()
+		{
+			_stateMachine.EnterIn<GamePlayLoopState>();
+		}
+
+		void ExitMenu()
+		{
+			_stateMachine.EnterIn<GameExitState>();
+		}
+	}
 }

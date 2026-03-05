@@ -10,6 +10,9 @@ namespace DevFuckers._Project.CodeBase.Runtime.Features.UIManager
         DefeatUIShowing
     }
 
+    /// <summary>
+    /// Lightweight UI state manager for switching between normal and special UI modes.
+    /// </summary>
     public class UIManager
     {
         private UIState _currentState = UIState.Normal;

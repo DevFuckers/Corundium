@@ -3,6 +3,9 @@ using Zenject;
 
 namespace DevFuckers._Project.CodeBase.Runtime.Common.Factories.StateFactory
 {
+    /// <summary>
+    /// Factory responsible for creating state instances (via the DI container).
+    /// </summary>
     public class StateFactory
     {
         private IInstantiator _instantiator;

@@ -5,10 +5,12 @@ namespace DevFuckers._Project.CodeBase.Runtime.Common.Services.LoadingCurtain
 {
 	public class Curtain : MonoBehaviour, ILoadingCurtain
 	{
-		[SerializeField] private CanvasGroup _curtain;
-		[SerializeField, Range(0.005f, 0.07f)] private float _fadeInSpeed;
+		[SerializeField] CanvasGroup _curtain;
 
-		private void Awake()
+		[SerializeField] [Range(0.005f, 0.07f)]
+		float _fadeInSpeed;
+
+		void Awake()
 		{
 			transform.SetParent(null);
 			DontDestroyOnLoad(this);
@@ -19,21 +21,21 @@ namespace DevFuckers._Project.CodeBase.Runtime.Common.Services.LoadingCurtain
 			gameObject.SetActive(true);
 			_curtain.alpha = 1;
 		}
-	
+
 		public void Hide()
 		{
 			gameObject.SetActive(true);
 			StartCoroutine(DoFadeIn());
 		}
-	
-		private IEnumerator DoFadeIn()
+
+		IEnumerator DoFadeIn()
 		{
 			while (_curtain.alpha > 0)
 			{
 				_curtain.alpha -= 0.03f;
 				yield return new WaitForSeconds(_fadeInSpeed);
 			}
-        
+
 			gameObject.SetActive(false);
 		}
 	}

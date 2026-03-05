@@ -8,11 +8,18 @@ using Random = UnityEngine.Random;
 
 namespace DevFuckers._Project.CodeBase.Runtime.Network
 {
+    /// <summary>
+    /// Network message carrying a player's identifier assigned on connection.
+    /// </summary>
     public struct PlayerID : NetworkMessage
     {
         public int ID;
     }
 
+    /// <summary>
+    /// Custom network manager extending Mirror's NetworkManager to hook into the
+    /// game's event system and spawn players with a generated ID.
+    /// </summary>
     public class CustomNetworkManager : NetworkManager
     {
         private EventBus _eventBus;
@@ -23,18 +30,27 @@ namespace DevFuckers._Project.CodeBase.Runtime.Network
             _eventBus = eventBus;
         }
         
+        /// <summary>
+        /// Called on network manager start. Disables automatic player creation.
+        /// </summary>
         public override void Start()
         {
             base.Start();
             autoCreatePlayer = false;
         }
 
+        /// <summary>
+        /// Called on server start. Registers handler for player creation.
+        /// </summary>
         public override void OnStartServer()
         {
             base.OnStartServer();
             NetworkServer.RegisterHandler<PlayerID>(OnCreateCharacter);
         }
 
+        /// <summary>
+        /// Called on client connection. Sends a random player ID to server and signals gameplay start.
+        /// </summary>
         public override void OnClientConnect()
         {
             base.OnClientConnect();
@@ -48,6 +64,9 @@ namespace DevFuckers._Project.CodeBase.Runtime.Network
             _eventBus.Trigger(Event.StartGameplay);
         }
     
+        /// <summary>
+        /// Handler that creates a character for the connected client and spawns it into the world.
+        /// </summary>
         void OnCreateCharacter(NetworkConnectionToClient conn, PlayerID id)
         {
             if (playerPrefab == null)

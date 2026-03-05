@@ -6,36 +6,38 @@ using Zenject;
 
 namespace DevFuckers._Project.CodeBase.Runtime.Infrastructure.GameApp.GameStateMachine.States
 {
-    public class GameBootstrapState : IState
-    {
-        private readonly GameStateMachine _gameStateMachine;
-        private readonly InputHandler _inputHandler;
-        private readonly ILoadingCurtain _loadingCurtain;
+	/// <summary>
+	///     Bootstrap state: sets up initial services and transitions to the main menu.
+	/// </summary>
+	public class GameBootstrapState : IState
+	{
+		readonly GameStateMachine _gameStateMachine;
+		readonly InputHandler _inputHandler;
+		readonly ILoadingCurtain _loadingCurtain;
 
-        [Inject]
-        public GameBootstrapState(GameStateMachine gameStateMachine, InputHandler inputHandler, ILoadingCurtain loadingCurtain)
-        {
-            _gameStateMachine = gameStateMachine;
-            _inputHandler = inputHandler;
-            _loadingCurtain = loadingCurtain;
-        }
+		[Inject]
+		public GameBootstrapState(GameStateMachine gameStateMachine, InputHandler inputHandler, ILoadingCurtain loadingCurtain)
+		{
+			_gameStateMachine = gameStateMachine;
+			_inputHandler = inputHandler;
+			_loadingCurtain = loadingCurtain;
+		}
 
-        public void Enter()
-        {
-            Debug.Log("Boostrap State");
-        
-            Application.targetFrameRate = 60;
-        
-            // init services 
-            _inputHandler.Enable();
-            _loadingCurtain.Show();
+		public void Enter()
+		{
+			Debug.Log("Boostrap State");
 
-            _gameStateMachine.EnterIn<GameMenuState>();
-        }
+			Application.targetFrameRate = 60;
 
-        public void Exit()
-        {
-        
-        }
-    }
+			// init services 
+			_inputHandler.Enable();
+			_loadingCurtain.Show();
+
+			_gameStateMachine.EnterIn<GameMenuState>();
+		}
+
+		public void Exit()
+		{
+		}
+	}
 }

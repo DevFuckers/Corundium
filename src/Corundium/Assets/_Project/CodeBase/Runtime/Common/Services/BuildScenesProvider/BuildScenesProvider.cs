@@ -3,36 +3,36 @@ using UnityEngine.SceneManagement;
 
 namespace DevFuckers._Project.CodeBase.Runtime.Common.Services.BuildScenesProvider
 {
-    public class BuildScenesProvider
-    {
-        public List<string> Scenes => new(_scenes);
+	public class BuildScenesProvider
+	{
+		readonly List<string> _scenes;
 
-        private List<string> _scenes;
+		public BuildScenesProvider()
+		{
+			_scenes = GetNames();
+		}
 
-        public BuildScenesProvider()
-        {
-            _scenes = GetNames();
-        }
+		public List<string> Scenes => new(_scenes);
 
-        private List<string> GetNames()
-        {
-            int count = SceneManager.sceneCountInBuildSettings;
-        
-            List<string> result = new(count);
+		List<string> GetNames()
+		{
+			var count = SceneManager.sceneCountInBuildSettings;
 
-            for (int i = 0; i < count; i++)
-                result.Add(GetName(i));
+			List<string> result = new(count);
 
-            return result;
-        }
+			for (var i = 0; i < count; i++)
+				result.Add(GetName(i));
 
-        private string GetName(int index)
-        {
-            string path = SceneUtility.GetScenePathByBuildIndex(index);
-            string filetype = ".scene";
+			return result;
+		}
 
-            return path[..^filetype.Length]
-                .Substring(path.LastIndexOf('/') + 1);
-        }
-    }
+		string GetName(int index)
+		{
+			var path = SceneUtility.GetScenePathByBuildIndex(index);
+			var filetype = ".scene";
+
+			return path[..^filetype.Length]
+				.Substring(path.LastIndexOf('/') + 1);
+		}
+	}
 }
