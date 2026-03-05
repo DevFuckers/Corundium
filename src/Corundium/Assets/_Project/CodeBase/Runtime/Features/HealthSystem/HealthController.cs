@@ -34,17 +34,11 @@ namespace DevFuckers._Project.CodeBase.Runtime.Features.HealthSystem
 		{
 			if (_currentHealth <= 0) 
 				return;
-			
-			Debug.Log("Hit " + transform.name + " with " + amount);
 
 			_currentHealth -= amount;
 
 			if (_currentHealth <= 0)
-			{
-				Debug.Log("Destroy " + transform.name);
-				
 				Die();
-			}
 		}
 		
 		[Server]
@@ -60,7 +54,6 @@ namespace DevFuckers._Project.CodeBase.Runtime.Features.HealthSystem
 		{
 			if (newHealth < oldHealth)
 			{
-				Debug.Log("play hit effects and so");
 				PlayHitEffects();
 			}
 		}
