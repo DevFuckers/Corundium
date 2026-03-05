@@ -9,14 +9,6 @@ using Random = UnityEngine.Random;
 namespace DevFuckers._Project.CodeBase.Runtime.Network
 {
     /// <summary>
-    /// Network message carrying a player's identifier assigned on connection.
-    /// </summary>
-    public struct PlayerID : NetworkMessage
-    {
-        public int ID;
-    }
-
-    /// <summary>
     /// Custom network manager extending Mirror's NetworkManager to hook into the
     /// game's event system and spawn players with a generated ID.
     /// </summary>
