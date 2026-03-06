@@ -1,32 +1,25 @@
 using System.Collections.Generic;
 using System.Linq;
-using DevFuckers._Project.CodeBase.Runtime.Common.Services.ConfigProvider;
+using Cysharp.Threading.Tasks;
+using DevFuckers._Project.CodeBase.Runtime.Common.Helpers;
 using UnityEngine;
-using Zenject;
 
 namespace CodeBase.Inventory
 {
     public class ItemsLoader
     {
         private string _path;
-        private IConfigProvider _configProvider;
 
         public ItemsLoader(string path)
         {
             _path = path;
         }
 
-        [Inject]
-        private void Construct(IConfigProvider configProvider)
+        public async UniTask<List<ItemDataSO>> Load()
         {
-            _configProvider = configProvider;
-        }
-
-        public async List<ItemDataSO> Load()
-        {
-            IList<ItemDataSO> items = await _configProvider.GetAllConfigsFromFolderAsync<ItemDataSO>(_path);
+            IList<ItemDataSO> items = EditorFinder.Instance.GetAssetsFromFolder<ItemDataSO>(_path).ToList();
            
-            //Debug.Log($"Loaded {items.Count} items data.");
+            Debug.Log($"Loaded {items.Count} items data.");
 
             return items as List<ItemDataSO>;
         }

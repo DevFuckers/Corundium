@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63867ca7432367b498cd46c97c99d5be, type: 3}
   m_Name: Stone
   m_EditorClassIdentifier: 
-  _id: 
-  _name: stone
+  _id: stones
+  _name: Stones
   _type: 0
   _maxStackAmount: 10
-  _icon: {fileID: 21300000, guid: 7ab74e659e1f0a34d9cfec21c478fc12, type: 3}
+  _icon: {fileID: 21300004, guid: 7ab74e659e1f0a34d9cfec21c478fc12, type: 3}
   _description: 

@@ -121,6 +121,9 @@ namespace CodeBase.Inventory.View
 
         public void ClearCell(int index)
         {
+            if (_viewCells[index] == null || _provider.EmptyItem == null)
+                return;
+            
             _viewCells[index].Clear(_provider.EmptyItem);
         }
 

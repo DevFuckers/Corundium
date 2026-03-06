@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
@@ -14,7 +14,7 @@ namespace DevFuckers._Project.CodeBase.Runtime.Common.Services.ConfigProvider
 		/// <param name="key">Adress key from addressabless</param>
 		/// <typeparam name="T"></typeparam>
 		/// <returns></returns>
-		public async Task<T> GetConfigAsync<T>(string key = "default") where T : ScriptableObject
+		public async UniTask<T> GetConfigAsync<T>(string key = "default") where T : ScriptableObject
 		{
 			var addressKey = key == "default" ? $"{typeof(T).Name}_{key}" : key;
 
@@ -28,7 +28,7 @@ namespace DevFuckers._Project.CodeBase.Runtime.Common.Services.ConfigProvider
 			return null;
 		}
 
-		public async Task<IList<T>> GetAllConfigsFromFolderAsync<T>(string folderKey) where T : ScriptableObject
+		public async UniTask<IList<T>> GetAllConfigsFromFolderAsync<T>(string folderKey) where T : ScriptableObject
 		{
 			if (string.IsNullOrEmpty(folderKey))
 			{

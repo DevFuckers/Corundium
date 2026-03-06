@@ -18,16 +18,17 @@ namespace CodeBase.Inventory.Architecture
             _inventoryPrefab = inventoryPrefab;
         }
 
-        public InventoryView CreateInventory(Vector3 position)
+        public InventoryView CreateInventory(Vector3 position, string name)
         {
-            InventoryView view = CreateWindow(position);
+            InventoryView view = CreateWindow(position, name);
 
             return view;
         }
 
-        private InventoryView CreateWindow(Vector3 position)
+        private InventoryView CreateWindow(Vector3 position, string name)
         {
             InventoryView window = _factory.Instantiate(_inventoryPrefab, _canvas.transform);
+            window.name = name;
 
             position.x += _canvas.pixelRect.width / 2f;
             position.y = _canvas.pixelRect.height / 2f;

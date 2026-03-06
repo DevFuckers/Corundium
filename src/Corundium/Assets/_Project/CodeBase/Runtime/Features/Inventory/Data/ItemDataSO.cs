@@ -22,12 +22,4 @@ namespace CodeBase.Inventory
 
         public void SetId(string id) => _id = id;
     }
-
-    public enum ItemType
-    {
-        Default,
-        Tool,
-        Food,
-        Empty
-    }
 }

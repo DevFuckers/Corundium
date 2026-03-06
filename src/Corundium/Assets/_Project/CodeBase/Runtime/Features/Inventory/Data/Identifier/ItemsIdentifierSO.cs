@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Cysharp.Threading.Tasks;
 using DevFuckers._Project.CodeBase.Runtime.Common.InspectorFeatures.ButtonEditor;
 using DevFuckers._Project.CodeBase.Runtime.Common.InspectorFeatures.ReadOnlyInspector;
 using UnityEngine;
@@ -17,30 +18,32 @@ namespace CodeBase.Inventory
         private ItemsLoader _loader;
         private Identifier _identifier;
 
-        private void Initialize()
+        private async UniTask Initialize()
         {
             _loader = new ItemsLoader(_path);
             _identifier = new Identifier();
             
-            LoadItems();
+            await LoadItems();
             IdentifyItems(_items);
-        }
-
-        private void Awake()
-        {
-             Initialize();
         }
 
         public void OnButtonPressed()
         {
-            Initialize();
+            
+#if UNITY_EDITOR
+            if (Application.isPlaying)
+                return;
+            
+            Initialize().Forget();
+#endif            
+            
         }
 
         public List<ItemData> GetItemsData() =>
             _items.Select(item => item.GetItemData()).ToList();
 
-        private void LoadItems() =>
-            _items = _loader.Load();
+        private async UniTask LoadItems() =>
+            _items = await _loader.Load();
 
         private void IdentifyItems(List<ItemDataSO> items)
         {
@@ -50,7 +53,10 @@ namespace CodeBase.Inventory
             for (int i = 0; i < items.Count; i++)
             {
                 items[i].SetId(ids[i]);
+                UnityEditor.EditorUtility.SetDirty(items[i]);
             }
+            
+            UnityEditor.AssetDatabase.SaveAssets();
         }
     }
 }

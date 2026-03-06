@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 namespace DevFuckers._Project.CodeBase.Runtime.Common.Services.ConfigProvider
@@ -12,8 +12,8 @@ namespace DevFuckers._Project.CodeBase.Runtime.Common.Services.ConfigProvider
 		/// <param name="key">Adress key from addressabless</param>
 		/// <typeparam name="T"></typeparam>
 		/// <returns></returns>
-		Task<T> GetConfigAsync<T>(string key = "default") where T : ScriptableObject;
-		
-		Task<IList<T>> GetAllConfigsFromFolderAsync<T>(string folderKey) where T : ScriptableObject
+		UniTask<T> GetConfigAsync<T>(string key = "default") where T : ScriptableObject;
+
+		UniTask<IList<T>> GetAllConfigsFromFolderAsync<T>(string folderKey) where T : ScriptableObject;
 	}
 }

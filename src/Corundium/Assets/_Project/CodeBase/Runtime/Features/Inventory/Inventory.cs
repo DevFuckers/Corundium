@@ -46,7 +46,7 @@ namespace CodeBase.Inventory
 
         public void UpdateView()
         {
-            //if (_cells.Count > 0)
+            if (_cells.Count > 0)
                 View.UpdateCells(_cells);
         }
 
